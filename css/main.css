@@ -281,6 +281,7 @@ blockquote {
   color: var(--blockquote-color);
   margin: 0;
   padding: 0 15px;
+  word-break: break-all;
 }
 blockquote cite::before {
   content: '-';
@@ -302,7 +303,7 @@ kbd {
   color: #555;
   font-family: inherit;
   padding: 0.1em 0.3em;
-  white-space: nowrap;
+  white-space: pre-line;
 }
 .table-container {
   overflow: auto;
@@ -1196,7 +1197,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ebffee;
+  background: #ff4bff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
