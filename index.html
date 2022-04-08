@@ -166,7 +166,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/07/os-note1/" class="post-title-link" itemprop="url">进程读写磁盘过程(Linux)</a>
+            <a href="/2022/04/07/os-note1/" class="post-title-link" itemprop="url">进程读写磁盘简要过程(Linux)</a>
         </h2>
 
         <div class="post-meta">
@@ -178,6 +178,13 @@
 
               <time title="创建时间：2022-04-07 21:12:01" itemprop="dateCreated datePublished" datetime="2022-04-07T21:12:01+08:00">2022-04-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-08 12:48:34" itemprop="dateModified" datetime="2022-04-08T12:48:34+08:00">2022-04-08</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -189,7 +196,7 @@
             </span>
 
           
-            <span id="/2022/04/07/os-note1/" class="post-meta-item leancloud_visitors" data-flag-title="进程读写磁盘过程(Linux)" title="阅读次数">
+            <span id="/2022/04/07/os-note1/" class="post-meta-item leancloud_visitors" data-flag-title="进程读写磁盘简要过程(Linux)" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -208,7 +215,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="一-请求进程从用户态进入内核态"><a href="#一-请求进程从用户态进入内核态" class="headerlink" title="一 请求进程从用户态进入内核态"></a>一 请求进程从用户态进入内核态</h3><ol>
+          <h2 id="进程读写磁盘简要过程-Linux-0-11"><a href="#进程读写磁盘简要过程-Linux-0-11" class="headerlink" title=" 进程读写磁盘简要过程(Linux-0.11)"></a><center> 进程读写磁盘简要过程(Linux-0.11)</h2><h3 id="一-请求进程从用户态进入内核态"><a href="#一-请求进程从用户态进入内核态" class="headerlink" title="一 请求进程从用户态进入内核态"></a>一 请求进程从用户态进入内核态</h3><ol>
 <li>进程在用户态调用read函数 输入参数  <blockquote>
 <p>read 展成int 0X80，进入内核态。system_call进行-根据传入参数查表 sys_call_table-真正调用sys_read（在内核态真正操作的函数）</p>
 </blockquote>
@@ -216,10 +223,16 @@
 <li>通过根目录的FCB找到根目录的数据块 不断解析找到对应文件的FCB  </li>
 <li>根据文件的FCB数据和读取的字节位置确定盘块号</li>
 <li>盘块号等参数写入电梯队列</li>
-<li>唤醒磁盘驱动程序，请求进程阻塞<h3 id="三-磁盘驱动程序运行"><a href="#三-磁盘驱动程序运行" class="headerlink" title="三 磁盘驱动程序运行"></a>三 磁盘驱动程序运行</h3></li>
-<li>根据盘块号算出CHS</li>
-<li>组织通道程序发送相关参数</li>
-<li>启动通道与设备，准备I&#x2F;O操作（磁盘发出中断信号）<h3 id="四-CPU处理磁盘中断信号，磁盘转入I-x2F-O中断处理程序，CPU返回被中断的进程"><a href="#四-CPU处理磁盘中断信号，磁盘转入I-x2F-O中断处理程序，CPU返回被中断的进程" class="headerlink" title="四 CPU处理磁盘中断信号，磁盘转入I&#x2F;O中断处理程序，CPU返回被中断的进程"></a>四 CPU处理磁盘中断信号，磁盘转入I&#x2F;O中断处理程序，CPU返回被中断的进程</h3><h3 id="五-I-x2F-O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程"><a href="#五-I-x2F-O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程" class="headerlink" title="五 I&#x2F;O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程"></a>五 I&#x2F;O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程</h3><h3 id="六-请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。"><a href="#六-请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。" class="headerlink" title="六 请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。"></a>六 请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。</h3></li>
+<li>唤醒磁盘驱动程序，请求进程阻塞</li>
+<li>CPU调度执行其他进程<h3 id="三-磁盘驱动程序运行-缓冲区并无相应缓存"><a href="#三-磁盘驱动程序运行-缓冲区并无相应缓存" class="headerlink" title="三 磁盘驱动程序运行(缓冲区并无相应缓存)"></a>三 磁盘驱动程序运行(缓冲区并无相应缓存)</h3></li>
+<li>根据盘块号算出CHS </li>
+<li>组织通道程序发送相关参数 </li>
+<li>启动通道与设备，准备I&#x2F;O操作（磁盘发出中断信号）<h3 id="四-CPU响应磁盘中断信号"><a href="#四-CPU响应磁盘中断信号" class="headerlink" title="四 CPU响应磁盘中断信号"></a>四 CPU响应磁盘中断信号</h3></li>
+<li>CPU（此时正在执行其他进程）响应设备响应中断</li>
+<li>被中断的进程信息被压入中断栈中，CPU通过外中断进入核态，执行中断处理程序</li>
+<li>CPU使磁盘设备驱动程序转入相应的中断处理程序</li>
+<li>CPU分析中断原因，进行中断处理</li>
+<li>CPU从中断返回<h3 id="五-I-x2F-O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程"><a href="#五-I-x2F-O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程" class="headerlink" title="五 I&#x2F;O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程"></a>五 I&#x2F;O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程</h3><h3 id="六-请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。"><a href="#六-请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。" class="headerlink" title="六 请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。"></a>六 请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。</h3></li>
 </ol>
 
       
