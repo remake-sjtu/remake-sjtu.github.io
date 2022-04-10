@@ -20,30 +20,32 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="见山还是山">
-<meta property="og:type" content="website">
-<meta property="og:title" content="源之居">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="信息就是位＋上下文系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。  此处的上下文在我的理解中就是数据的类型 int char float等  程序被其他程序翻译成不同的格式一段简单的程序 hello.c 123456#include&lt;stdio.h&gt;int main()&amp;#123;    printf(&quot;h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解计算机系统第一章 笔记">
+<meta property="og:url" content="http://example.com/2022/04/10/csapp-note1/index.html">
 <meta property="og:site_name" content="源之居">
-<meta property="og:description" content="见山还是山">
+<meta property="og:description" content="信息就是位＋上下文系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。  此处的上下文在我的理解中就是数据的类型 int char float等  程序被其他程序翻译成不同的格式一段简单的程序 hello.c 123456#include&lt;stdio.h&gt;int main()&amp;#123;    printf(&quot;h">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-10T12:10:29.890Z">
+<meta property="article:modified_time" content="2022-04-10T12:10:29.925Z">
 <meta property="article:author" content="FY-Zhu">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/04/10/csapp-note1/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>源之居</title>
+  <title>深入理解计算机系统第一章 笔记 | 源之居</title>
   
 
 
@@ -146,9 +148,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -164,10 +167,9 @@
       <meta itemprop="name" content="源之居">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/10/csapp-note1/" class="post-title-link" itemprop="url">深入理解计算机系统第一章 笔记</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          深入理解计算机系统第一章 笔记
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -197,6 +199,18 @@
               <span class="leancloud-visitors-count"></span>
             </span>
   
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/04/10/csapp-note1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/10/csapp-note1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
   
 
         </div>
@@ -208,7 +222,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="信息就是位＋上下文"><a href="#信息就是位＋上下文" class="headerlink" title="信息就是位＋上下文"></a>信息就是位＋上下文</h3><p>系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。</p>
+        <h3 id="信息就是位＋上下文"><a href="#信息就是位＋上下文" class="headerlink" title="信息就是位＋上下文"></a>信息就是位＋上下文</h3><p>系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。</p>
 <blockquote>
 <p><em><strong>此处的</strong></em>上下文在我的理解中就是数据的类型 int char float等</p>
 </blockquote>
@@ -269,253 +283,37 @@
 <p>一个指令对应一个操作，多数据并行运用SIMD技术可以一个指令执行更多操作数提供更快的运行速度。</p>
 </blockquote>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/07/os-note1/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/07/os-note1/" class="post-title-link" itemprop="url">进程读写磁盘简要过程(Linux)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-07 21:12:01" itemprop="dateCreated datePublished" datetime="2022-04-07T21:12:01+08:00">2022-04-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-08 13:06:44" itemprop="dateModified" datetime="2022-04-08T13:06:44+08:00">2022-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OS%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OS笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/04/07/os-note1/" class="post-meta-item leancloud_visitors" data-flag-title="进程读写磁盘简要过程(Linux)" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="进程读写磁盘简要过程-Linux-0-11"><a href="#进程读写磁盘简要过程-Linux-0-11" class="headerlink" title=" 进程读写磁盘简要过程(Linux-0.11)"></a><center> 进程读写磁盘简要过程(Linux-0.11)</h1><ol>
-<li><p>请求进程从用户态进入内核态  </p>
-<ol>
-<li>进程在用户态调用read函数 输入参数  <blockquote>
-<p>read 展成int 0X80，进入内核态。system_call进行-根据传入参数查表 sys_call_table-真正调用sys_read（在内核态真正操作的函数）</p>
-</blockquote>
-</li>
-</ol>
-</li>
-<li><p>唤醒磁盘驱动程序  </p>
-<ol>
-<li>通过根目录的FCB找到根目录的数据块 不断解析找到对应文件的FCB    </li>
-<li>根据文件的FCB数据和读取的字节位置确定盘块号  </li>
-<li>盘块号等参数写入电梯队列</li>
-<li>唤醒磁盘驱动程序，请求进程阻塞</li>
-<li>CPU调度执行其他进程</li>
-</ol>
-</li>
-<li><p>磁盘驱动程序运行(缓冲区并无相应缓存)  </p>
-<ol>
-<li>根据盘块号算出CHS </li>
-<li>组织通道程序发送相关参数 </li>
-<li>启动通道与设备，准备I&#x2F;O操作（磁盘发出中断信号）</li>
-</ol>
-</li>
-<li><p>CPU响应磁盘中断信号  </p>
-<ol>
-<li>CPU（此时正在执行其他进程）响应设备响应中断</li>
-<li>被中断的进程信息被压入中断栈中，CPU通过外中断进入核态，执行中断处理程序</li>
-<li>CPU使磁盘设备驱动程序转入相应的中断处理程序</li>
-<li>CPU分析中断原因，进行中断处理</li>
-<li>CPU从中断返回</li>
-</ol>
-</li>
-<li><p>I&#x2F;O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程</p>
-</li>
-<li><p>请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。</p>
-</li>
-</ol>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/07/os-note1/" rel="prev" title="进程读写磁盘简要过程(Linux)">
+      <i class="fa fa-chevron-left"></i> 进程读写磁盘简要过程(Linux)
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/05/blog-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/05/blog-1/" class="post-title-link" itemprop="url">一些矫情的话</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-05 22:03:38" itemprop="dateCreated datePublished" datetime="2022-04-05T22:03:38+08:00">2022-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-07 14:44:38" itemprop="dateModified" datetime="2022-04-07T14:44:38+08:00">2022-04-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/04/05/blog-1/" class="post-meta-item leancloud_visitors" data-flag-title="一些矫情的话" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>王小波在黄金时代中说过</p>
-<blockquote>
-<p>每个人的本性都是好吃懒做，好色贪淫，假如你克勤克俭，守身如玉，这就犯了矫饰之罪，比好吃懒做好色贪淫更可恶。</p>
-</blockquote>
-<p>其中的反讽意味如今读来越发透彻。</p>
-<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>之前的我网上冲浪时看见各种令人心痛、愤怒的消息时候常常会告诉自己</p>
-<blockquote>
-<p>互联网放大了局部的悲惨，让你以为这就是世界的全部，你不用闭上眼睛假装看不见但也不用过多沉溺于怀疑之中，多着眼于身边人，多感受世界的美好。</p>
-</blockquote>
-<p>现在却越发觉得，我或许一开始就理解错了世界，世界或许也很委屈，自己一直就是这样子，只是我理解错了而已。越发能体会到什么是</p>
-<blockquote>
-<p>天地不仁，以万物为刍狗。</p>
-</blockquote>
-<p>终于，我开始慢慢接受这个真实的世界，它本来就是这个样子，漫长岁月里从未改变，我总是以为光明是多于黑暗的，事实上，正邪、光暗、善恶从来都是成对出现互相纠缠成螺旋态存在于这个世界上的。</p>
-<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><p>越发敬佩教员的伟大，遵从世界的规则 顺势而为，从未放弃人民，带着更多的人民抵御着黑暗向着光明迈了出去。面对黑暗，他想着承认它团结它改变它，而我仅仅只会愤怒。</p>
-<h3 id="4"><a href="#4" class="headerlink" title="4"></a>4</h3><p>我的愤怒其实是极其狭隘的</p>
-<blockquote>
-<p>当你试图轻易批评一个人时，要想想，对方或许根本不具备你那样的条件。</p>
-</blockquote>
-<h3 id="5"><a href="#5" class="headerlink" title="5"></a>5</h3><p>向绝对光明要求，外面一片漆黑。站在幽暗深渊中，万物之中都有光明。</p>
-<blockquote>
-<p>如果说恃强凌弱和好色贪淫是人身为动物的天性，那么文明和同理心或许就是人身上最珍贵的品质的反击。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -562,6 +360,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%B0%B1%E6%98%AF%E4%BD%8D%EF%BC%8B%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">信息就是位＋上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%A2%AB%E5%85%B6%E4%BB%96%E7%A8%8B%E5%BA%8F%E7%BF%BB%E8%AF%91%E6%88%90%E4%B8%8D%E5%90%8C%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">程序被其他程序翻译成不同的格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%A1%AC%E4%BB%B6%E7%BB%84%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">系统的硬件组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98-cache-%E5%92%8C%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text">高速缓存(cache)和存储设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E6%8A%BD%E8%B1%A1"><span class="nav-number">6.</span> <span class="nav-text">三个抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="nav-number">7.</span> <span class="nav-text">并发和并行</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
