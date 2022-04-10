@@ -28,7 +28,7 @@
 <meta property="og:description" content="信息就是位＋上下文系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。  此处的上下文在我的理解中就是数据的类型 int char float等  程序被其他程序翻译成不同的格式一段简单的程序 hello.c 123456#include&lt;stdio.h&gt;int main()&amp;#123;    printf(&quot;h">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-10T12:10:29.890Z">
-<meta property="article:modified_time" content="2022-04-10T12:10:29.925Z">
+<meta property="article:modified_time" content="2022-04-10T12:17:42.524Z">
 <meta property="article:author" content="FY-Zhu">
 <meta name="twitter:card" content="summary">
 
@@ -177,8 +177,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-04-10 20:10:29" itemprop="dateCreated datePublished" datetime="2022-04-10T20:10:29+08:00">2022-04-10</time>
+              <time title="创建时间：2022-04-10 20:10:29 / 修改时间：20:17:42" itemprop="dateCreated datePublished" datetime="2022-04-10T20:10:29+08:00">2022-04-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,32 +234,37 @@
 <li>预处理器根据头文件将程序修改为另一个C程序   此时文件为hello.i</li>
 <li>编译器将程序编译成汇编语言   此时文件为hello.s</li>
 <li>汇编器将汇编程序翻译成机器语言指令并打包成可重定位目标程序的格式，保存在hello.o二进制文件中此时程序为01二进制表示的一串数字序列   此时文件为hello.o</li>
-<li>链接器将printf函数的可重定位目标程序文件printf.o合并到该原始文件hello.o中 最终得到hello 文件    此时文件为hello<h3 id="系统的硬件组成"><a href="#系统的硬件组成" class="headerlink" title="系统的硬件组成"></a>系统的硬件组成</h3>CPU I&#x2F;O设备（磁盘、鼠标、显示器、键盘等） 内存（主存） 总线</li>
+<li>链接器将printf函数的可重定位目标程序文件printf.o合并到该原始文件hello.o中 最终得到hello 文件    此时文件为hello</li>
 </ol>
+<h3 id="系统的硬件组成"><a href="#系统的硬件组成" class="headerlink" title="系统的硬件组成"></a>系统的硬件组成</h3><p>CPU I&#x2F;O设备（磁盘、鼠标、显示器、键盘等） 内存（主存） 总线</p>
 <p>CPU由 PC(程序计数器 指向要操作的指令的地址) 寄存器文件(由寄存器组成 寄存器为大小为一个字的存储设备) ALU(用于计算) 等其他设备(比如cache)组成,CPU可执行这些操作</p>
 <ol>
 <li>加载：从内存复制一个字节&#x2F;一个字到寄存器，覆盖寄存器原来内容</li>
 <li>操作：把两个寄存器内容复制到ALU，ALU进行运算后把内容存放到一个寄存器中，覆盖寄存器中的原内容</li>
 <li>存储：从寄存器中复制内容到内存中</li>
-<li>跳转：从指令中复制内容到PC中，覆盖PC的原来内容<h3 id="高速缓存-cache-和存储设备"><a href="#高速缓存-cache-和存储设备" class="headerlink" title="高速缓存(cache)和存储设备"></a>高速缓存(cache)和存储设备</h3>以下存储器层次结构 左方可以看成是右方的高速缓存<blockquote>
+<li>跳转：从指令中复制内容到PC中，覆盖PC的原来内容</li>
+</ol>
+<h3 id="高速缓存-cache-和存储设备"><a href="#高速缓存-cache-和存储设备" class="headerlink" title="高速缓存(cache)和存储设备"></a>高速缓存(cache)和存储设备</h3><p>以下存储器层次结构 左方可以看成是右方的高速缓存</p>
+<blockquote>
 <p>寄存器-L1高速缓存-L2高速缓存-L3高速缓存-内存-磁盘-远程存储<br>L1 L2 L3高速缓存是因为CPU访问内存太慢依据<strong>局部性原理</strong>而诞生的</p>
 </blockquote>
-<h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><p>以普通单核CPU为例子，进程为程序加上程序运行所需要的资源空间，线程为进程中程序的子部分，同一进程的线程共享该进程的所有数据。</p>
-</li>
-</ol>
-<p><strong>CPU中实际运行的是线程</strong> 但用户看见的只有进程</p>
+<h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><p>以普通单核CPU为例子，进程为程序加上程序运行所需要的资源空间，线程为进程中程序的子部分，同一进程的线程共享该进程的所有数据。<br><strong>CPU中实际运行的是线程</strong> 但用户看见的只有进程</p>
 <h3 id="三个抽象"><a href="#三个抽象" class="headerlink" title="三个抽象"></a>三个抽象</h3><ol>
 <li>I&#x2F;O设备抽象成文件，用户看来操作系统通过操作设备对应的文件(鼠标文件 显示器文件等)来控制I&#x2F;O设备，网络也可以看成一种I&#x2F;O设备即文件。</li>
 <li>文件和内存抽象成虚拟内存<blockquote>
 <p>在每个进程看来自己独占整个操作系统，实际上每个进程所看到的都是虚拟内存空间，虚拟内存经过映射指向实际的地址空间.<strong>编写代码的指针的数值实际上是虚拟内存空间的地址，并没有指向实际的地址空间</strong></p>
 </blockquote>
 </li>
-<li>虚拟内存＋CPU抽象成虚拟机 <h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h3></li>
-<li>并发<blockquote>
+<li>虚拟内存＋CPU抽象成虚拟机</li>
+</ol>
+<h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h3><ol>
+<li><p>并发</p>
+<blockquote>
 <p>CPU只能同时运转一个进程，当进程需要处理一些耗费时间较长且不需要CPU操作的事情时，CPU会去执行下一个进程，此时操作系统会保存被切换进程运行所需要的所有状态信息，也就是上下文信息。这被称为进程切换<br>并发就是CPU不断切换执行的进程来提高CPU的利用率，好比一个单人跑道上面 A跑累了切换成B去跑,B跑累了切换成C去跑，每个人都记住自己被切换时停止的位置信息(即上下文信息)，轮到他跑步时从原来位置接着跑</p>
 </blockquote>
 </li>
-<li>并行</li>
+<li><p>并行</p>
+</li>
 </ol>
 <p>线程级并发</p>
 <blockquote>
