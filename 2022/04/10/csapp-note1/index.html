@@ -28,7 +28,7 @@
 <meta property="og:description" content="计算机系统漫游信息就是位＋上下文系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。  此处的上下文在我的理解中就是数据的类型 int char float等  程序被其他程序翻译成不同的格式一段简单的程序 hello.c 123456#include&lt;stdio.h&gt;int main()&amp;#123;    printf(">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-10T12:10:29.890Z">
-<meta property="article:modified_time" content="2022-04-14T12:14:39.606Z">
+<meta property="article:modified_time" content="2022-04-15T04:08:29.562Z">
 <meta property="article:author" content="FY-Zhu">
 <meta name="twitter:card" content="summary">
 
@@ -185,7 +185,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-14 20:14:39" itemprop="dateModified" datetime="2022-04-14T20:14:39+08:00">2022-04-14</time>
+                <time title="修改时间：2022-04-15 12:08:29" itemprop="dateModified" datetime="2022-04-15T12:08:29+08:00">2022-04-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,11 +257,11 @@
 <h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><p>以普通单核CPU为例子，进程为程序加上程序运行所需要的资源空间，线程为进程中程序的子部分，同一进程的线程共享该进程的所有数据。<br><strong>CPU中实际运行的是线程</strong> 但用户看见的只有进程</p>
 <h3 id="四个抽象"><a href="#四个抽象" class="headerlink" title="四个抽象"></a>四个抽象</h3><ol>
 <li>I&#x2F;O设备抽象成文件，用户看来操作系统通过操作设备对应的文件(鼠标文件 显示器文件等)来控制I&#x2F;O设备，网络也可以看成一种I&#x2F;O设备即文件。</li>
-<li>文件和主存抽象成虚拟内存<blockquote>
+<li>文件和主存抽象成虚拟内存</li>
+</ol>
+<blockquote>
 <p>虚拟地址空间：(<strong>和虚拟内存不是一个概念</strong>)在每个进程看来自己独占整个操作系统，实际上每个进程所看到的都是虚拟地址空间，虚拟地址经过映射指向实际的地址空间.<strong>编写代码的指针的数值实际上是虚拟地址，并没有指向实际的地址空间</strong></p>
 </blockquote>
-</li>
-</ol>
 <blockquote>
 <p>虚拟内存：将所有存储设备(磁盘、网络文件等)都看成内存的一部分，对用户进程来说它们都是内存，是一个非常大的连续的字节数组，但实际上是虚拟内存。当进程要使用不在内存的内容时操作系统会把这些内容调进内存中。</p>
 </blockquote>
@@ -273,13 +273,13 @@
 <li>进程＋操作系统抽象成虚拟机</li>
 </ol>
 <h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h3><ol>
-<li><p>并发</p>
+<li>并发</li>
+</ol>
 <blockquote>
 <p>CPU只能同时运转一个进程，当进程需要处理一些耗费时间较长且不需要CPU操作的事情时，CPU会去执行下一个进程，此时操作系统会保存被切换进程运行所需要的所有状态信息，也就是上下文信息。这被称为进程切换<br>并发就是CPU不断切换执行的进程来提高CPU的利用率，好比一个单人跑道上面 A跑累了切换成B去跑,B跑累了切换成C去跑，每个人都记住自己被切换时停止的位置信息(即上下文信息)，轮到他跑步时从原来位置接着跑</p>
 </blockquote>
-</li>
-<li><p>并行</p>
-</li>
+<ol start="2">
+<li>并行</li>
 </ol>
 <p>线程级并发</p>
 <blockquote>
@@ -397,14 +397,14 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
