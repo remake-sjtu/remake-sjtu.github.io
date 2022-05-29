@@ -152,6 +152,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/26/leetcode_note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/26/leetcode_note/" class="post-title-link" itemprop="url">算法题笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-26 13:45:51 / 修改时间：14:44:32" itemprop="dateCreated datePublished" datetime="2022-05-26T13:45:51+08:00">2022-05-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/05/26/leetcode_note/" class="post-meta-item leancloud_visitors" data-flag-title="算法题笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>开始暑假的集中刷题了，时隔两个月没刷算法，今天发现之前获得的手感和技巧都丧失的差不多了，所以萌生了记笔记的想法。</p>
+<h1 id="LeetCode-Easy"><a href="#LeetCode-Easy" class="headerlink" title="LeetCode Easy"></a>LeetCode Easy</h1><h2 id="35-搜索插入位置"><a href="#35-搜索插入位置" class="headerlink" title="35 搜索插入位置"></a>35 搜索插入位置</h2><h3 id="二分"><a href="#二分" class="headerlink" title="二分"></a>二分</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">searchInsert</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> left=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right=length<span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">            <span class="type">int</span> now=nums[mid];</span><br><span class="line">            <span class="keyword">if</span>(now&lt;target) left=mid+<span class="number">1</span>; </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(now&gt;target) right=mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> mid;</span><br><span class="line">            mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> right+<span class="number">1</span>; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这道题目我的犹豫点在于<strong>循环的时候target是否会落在获得的区间之外</strong>，比如[0，100，110，200] target&#x3D;102,第一次迭代后，nums[left]&#x3D;110；target其实在left的左边，因此在二分处理的时候一直思考很多限制，一个简单的Easy题目却想了很多。后来想明白了，我的犹豫点是对的，但是这不影响什么。</p>
+<p>这道题目，可以找到和target相等的目标值也就罢了（704题），找不到也就是需要插入的时候，要把target插入在两个数字中间的区域，这种情况下 按照从大到小排序，某次迭代后target一定会落在获得的区间旁边的区域，也就是<strong>right和right+1之间或者left和left-1之间</strong>，此后紧挨着target的区间边界left&#x2F;right不动，另一个边界不断移动，直到 right小于left ,此时迭代终止，而target的位置等于right+1也就是在right和left之间；</p>
+<h3 id="二分加暴力"><a href="#二分加暴力" class="headerlink" title="二分加暴力"></a>二分加暴力</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">searchInsert</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> left=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right=length<span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> temp=right-left;</span><br><span class="line">        <span class="keyword">while</span>(temp&gt;<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="type">int</span> mid=left+temp/<span class="number">2</span>;</span><br><span class="line">            <span class="type">int</span> now=nums[mid];</span><br><span class="line">            <span class="keyword">if</span>(now&lt;target) left=mid+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(now&gt;target) right=mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> mid;</span><br><span class="line">            temp=right-left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=left;i&lt;=right;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i]&gt;=target) <span class="keyword">return</span> i;</span><br><span class="line">        &#125; <span class="comment">//这个暴力写法很优雅。</span></span><br><span class="line">        <span class="keyword">return</span> right+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>仅仅在区间很小的时候采用了暴力，这可能会更高效一点。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/22/%E8%AE%A1%E7%BD%91_%E5%85%AB%E8%82%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -183,7 +265,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-23 16:40:33" itemprop="dateModified" datetime="2022-05-23T16:40:33+08:00">2022-05-23</time>
+                <time title="修改时间：2022-05-26 13:47:43" itemprop="dateModified" datetime="2022-05-26T13:47:43+08:00">2022-05-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -191,7 +273,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%A2%E8%AF%95-%E5%85%AB%E8%82%A1/" itemprop="url" rel="index"><span itemprop="name">面试_八股</span></a>
+                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
                 </span>
             </span>
 
@@ -788,7 +870,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-22 18:45:54" itemprop="dateModified" datetime="2022-05-22T18:45:54+08:00">2022-05-22</time>
+                <time title="修改时间：2022-05-30 00:19:00" itemprop="dateModified" datetime="2022-05-30T00:19:00+08:00">2022-05-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -874,6 +956,7 @@
 </blockquote>
 <p>我不爱你是Love，我也一样爱你是Charity，Love是情，Charity是义。情短暂而义长存。</p>
 <p>正如圣经所说 <strong>爱无野心，爱永不止息。</strong> 这里的爱大概就是义吧。</p>
+<p>友情、亲情、爱情皆是如此。</p>
 <p>守道义者，义永不止息。</p>
 <h2 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h2><p>看过一段话，如下。</p>
 <blockquote>
@@ -905,7 +988,7 @@
 <p>相比于辣我更喜清淡，只有在聚餐时候喜欢吃一些香辣的重口食物。</p>
 <p>独自吃饭时候，当我心境平和或是愉悦时候 我吃的清淡。当我心情不佳便会吃很多香辣重口的东西。读高三的时候经常吃蒸面条，浇上满满的辣椒。好友问我为什么吃那么多辣椒，我笑了笑并没有回答。其实只是那时候，心里太苦了。</p>
 <h2 id="倾诉"><a href="#倾诉" class="headerlink" title="倾诉"></a>倾诉</h2><p>我不喜欢倾诉自己当下的感情，正如我高三时候不会告诉好友我为什么要吃辣的原因，正如我现在不会说出我为什么那时候心里很苦的原因。</p>
-<p>我说出来的东西都是我真正放下的东西，我放下了那时候选择吃辣的苦 但 还没有放下之后那绵延不绝的苦。</p>
+<p>我说出来的东西都是我真正放下的东西，我放下了那时候选择吃辣的苦，有些东西还没有放下。</p>
 <p><strong>每个人的内心都很丰富，只是有人不喜欢表达，而我想用文字记录下来自己愿意说的东西</strong>。被不熟悉的人看也无妨，能耐着性子看我的记录本身就是对于我的好奇和尊重，所以谢谢屏幕面前的你。</p>
 <h2 id="惜命"><a href="#惜命" class="headerlink" title="惜命"></a>惜命</h2><p><strong>抛开道德</strong>   深夜无人的十字路口，红灯亮着，你会选择无视红灯走过去吗？</p>
 <p>我不会，因为我惜命。深夜的飙车党在心情勃发之时不会关注是否有人闯红灯，所以即使在深夜无人之时我也不会选择闯红灯。</p>
@@ -933,6 +1016,7 @@
 <p>他们背后的作者我尚且可以通过购买正版书籍来表达我的感激之情，可是尚未被人格化的他们呢？只能透过一行行文字去看看他们的内心，去将感恩之情化为绵延不绝的动力。</p>
 <p>或许不该将书本和作者割裂开来，可我以为 两者不同，虽是作者创造了他们，但他们有自己的灵魂和内在。</p>
 <p>写到这里忽然想明白了，我感激的是人类的文明，是文明的载体，是知识。</p>
+<h2 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h2><p>形策课上有人提了个问题，忘记了具体表达的语句，不过潜藏的意思是</p>
 
       
     </div>
@@ -983,7 +1067,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-30 22:26:37" itemprop="dateModified" datetime="2022-04-30T22:26:37+08:00">2022-04-30</time>
+                <time title="修改时间：2022-05-26 17:12:34" itemprop="dateModified" datetime="2022-05-26T17:12:34+08:00">2022-05-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1015,11 +1099,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>每当我学习一些新的物理理论知识，深入了解后发现，它们和之前的许多东西竟然形成了完整的闭环，我就会不由得赞叹物理的神奇和前辈们的伟大。</p>
-<p>忘记了什么时候看见的一句话，大概意思如下</p>
+          <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>每当我学习一些新的物理理论知识，深入了解后发现，它们和之前的许多东西竟然形成了完整的闭环，我就会不由得赞叹物理的神奇和前辈们的伟大。</p>
+<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>忘记了什么时候看见的一句话，大概意思如下</p>
 <blockquote>
-<p>选择物理专业意味着什么呢，对你来说这意味着在大学四年里，不论主动去探索自己感兴趣的领域还是被动的跟着老师去上那些严谨厚重的课程，你总会在不经意间为一个方程、一段历史感到震撼，你总会在做作业时想明白一些亘古不变的道理，你总会在四年后收获一个完整的物理框架–一个认识世界的开端。<br>每每想起这些，总会获得莫名的力量</p>
+<p>选择物理专业意味着什么呢，对你来说这意味着在大学四年里，不论主动去探索自己感兴趣的领域还是被动的跟着老师去上那些严谨厚重的课程，你总会在不经意间为一个方程、一段历史感到震撼，你总会在做作业时想明白一些亘古不变的道理，你总会在四年后收获一个完整的物理框架–一个认识世界的开端。</p>
 </blockquote>
+<p>每每想起这些，总会获得莫名的力量</p>
+<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><p>麦克斯韦方程组刚提出的时候，物理学家不接受这个理论，因为</p>
+<blockquote>
+<p>这么复杂的东西，它要对才怪呢！</p>
+</blockquote>
+<p>电磁学课上听到这个，笑个不停。</p>
 
       
     </div>
@@ -1596,7 +1686,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
