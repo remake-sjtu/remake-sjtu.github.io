@@ -152,6 +152,349 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/30/csapp-note4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/30/csapp-note4/" class="post-title-link" itemprop="url">深入理解计算机系统第五章第六章 笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-30 11:38:12 / 修改时间：13:29:23" itemprop="dateCreated datePublished" datetime="2022-06-30T11:38:12+08:00">2022-06-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/csapp-%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">csapp-笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="优化程序性能"><a href="#优化程序性能" class="headerlink" title="优化程序性能"></a>优化程序性能</h1><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><p>现代编译器已经非常成熟，<del>优化后的代码有时候程序员自己都看不懂</del>。</p>
+<p>但是，编译器还是保守，假设你的每个操作都是黑盒子，小心翼翼在不会影响你的操作的前提下进行优化，编译器必须很小心的使用<strong>安全的优化</strong></p>
+<h3 id="关于指针的例子"><a href="#关于指针的例子" class="headerlink" title="关于指针的例子"></a>关于指针的例子</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> *pt1,<span class="type">int</span> *pt2)</span></span>&#123;</span><br><span class="line">    *pt1+=*pt2;</span><br><span class="line">    *pt1+=*pt2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设我们的本意是 <em>pt1+&#x3D;2</em> (*pt2);这样写更快一点。 </p>
+<p>编译器并不会进行这样更快的优化，因为它无法确定 pt1和pt2是否指向内存中相同的位置。它只能假设不同的指针可能会指向内存中的同一位置。</p>
+<h2 id="循环中的低效率"><a href="#循环中的低效率" class="headerlink" title="循环中的低效率"></a>循环中的低效率</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(s);i++)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> length=<span class="built_in">strlen</span>(s)</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;length;i++)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每次循环都要计算strlen(s) 低效率</p>
+<p>假如代码修改了字符串S，编译器并不知道这是否会影响strlen(s)，因此每次都会计算，并不会进行优化。</p>
+<h2 id="过程中函数多次调用的低效率"><a href="#过程中函数多次调用的低效率" class="headerlink" title="过程中函数多次调用的低效率"></a>过程中函数多次调用的低效率</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun1</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test1</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fun1</span>()+<span class="built_in">fun1</span>()+<span class="built_in">fun1</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test2</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span>*<span class="built_in">fun1</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设我们知道fun1()并不会产生副作用，每次调用结果相同，那么test2更加高效。</p>
+<p>编译器不能判断fun1()是否会产生副作用，因此不会把test1优化到test2；</p>
+<h3 id="inline代替优化函数调用；"><a href="#inline代替优化函数调用；" class="headerlink" title="inline代替优化函数调用；"></a>inline代替优化函数调用；</h3><h2 id="不必要的内存引用"><a href="#不必要的内存引用" class="headerlink" title="不必要的内存引用"></a>不必要的内存引用</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(;j&lt;<span class="number">10</span>;j++)</span><br><span class="line">b[<span class="number">6</span>]+=a[j];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//优化 </span></span><br><span class="line"><span class="type">int</span> temp=<span class="number">0</span>; <span class="comment">// 优化后 该局部变量被保存在寄存器中，不用一次次的进行内存读写</span></span><br><span class="line"><span class="keyword">for</span>(;j&lt;<span class="number">10</span>;j++)</span><br><span class="line">temp+=a[j];</span><br><span class="line"></span><br><span class="line">b[<span class="number">6</span>]=t;</span><br></pre></td></tr></table></figure>
+<p>因为不确定a[j]的变化是否会改变b[6]的数值，因此每次都要从内存读入b[6]，再把更新后的b[6]写进内存,这种内存读写是不必要的，要一次次再内存和寄存器中传送数据。</p>
+<p>因为b[6]和a[j]可能指向同一个地址，因此编译器不会进行优化。</p>
+<h2 id="流水线处理和并行"><a href="#流水线处理和并行" class="headerlink" title="流水线处理和并行"></a>流水线处理和并行</h2><p>进行循环展开，减少循环迭代次数，提高效率。(减少过程中的索引计算和条件分支，减少计算中关键路径的操作数量)。</p>
+<blockquote>
+<p>不相关的计算可以进行流水线处理</p>
+</blockquote>
+<p>循环展开和并行累计多个值一起计算，会提高程序的流水线处理的效率，提高程序并行性。</p>
+<p>编译器会自行进行优化，仅作为了解 <del>其实是我现在这部分学的不好</del></p>
+<p>下学期 一定要看看 CAAQA 这本经典书</p>
+<h1 id="存储器层次结构"><a href="#存储器层次结构" class="headerlink" title="存储器层次结构"></a>存储器层次结构</h1><h2 id="存储技术"><a href="#存储技术" class="headerlink" title="存储技术"></a>存储技术</h2><p>SRAM(在CPU芯片上) DRAM(主存) 闪存 等等</p>
+<p>如何进行内存读写</p>
+<blockquote>
+<p>cpu将地址传入总线上 发出信号；主存将对应地址的数据x传入总线；cpu 读出数据x 复制到寄存器中。cpu将地址放到总线上，主存读出地址，等待数据字；cpu将数据放到总线上；主存接收数据并且储存到先前指定的地址。 </p>
+</blockquote>
+<p>磁盘构造，如何进行磁盘读写(指令，逻辑块号，内存地址)</p>
+<blockquote>
+<p>CPU通知磁盘控制器进行磁盘读写后切换执行其他进程，磁盘写数据到主存中无需CPU操作，写数据结束后 中断 通知CPU。这称为直接内存访问DMA，这种数据传送称为DMA传送</p>
+</blockquote>
+<p>奇怪的SSD(固态硬盘).</p>
+<h2 id="局部性原理"><a href="#局部性原理" class="headerlink" title="局部性原理"></a>局部性原理</h2><p>程序倾向于使用其地址<strong>接近</strong>或者等于最近使用过的数据和指令的地址的那些数据和地址。</p>
+<blockquote>
+<p>program tend to use data and instructions with addresses near or equal to those they have used recently.</p>
+</blockquote>
+<p><strong>时间局部性和空间局部性</strong></p>
+<p>避免代码出现差的局部性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/csapp-note3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/28/csapp-note3/" class="post-title-link" itemprop="url">深入理解计算机系统第三章 笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-28 18:36:21" itemprop="dateCreated datePublished" datetime="2022-06-28T18:36:21+08:00">2022-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-29 14:46:18" itemprop="dateModified" datetime="2022-06-29T14:46:18+08:00">2022-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/csapp-%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">csapp-笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="程序的机器级表示"><a href="#程序的机器级表示" class="headerlink" title="程序的机器级表示"></a>程序的机器级表示</h1><h2 id="隐藏的东西-in-higher"><a href="#隐藏的东西-in-higher" class="headerlink" title="隐藏的东西 in higher"></a>隐藏的东西 in higher</h2><p>程序计数器PC，寄存器(整数寄存器，浮点数寄存器，条件码寄存器)。寄存器可以操作不储存不同字节大小的数据。</p>
+<h2 id="阅读汇编代码"><a href="#阅读汇编代码" class="headerlink" title="阅读汇编代码"></a>阅读汇编代码</h2><p>反汇编得到汇编代码</p>
+<p>了解各个指令的具体含义，sub、movb、movzbw、leaq等等。学会阅读不同的操作数格式。</p>
+<h2 id="控制语句"><a href="#控制语句" class="headerlink" title="控制语句"></a>控制语句</h2><p>根据条件码寄存器跳转到指定位置，以达到循环语句和判断语句的效果。</p>
+<p>switch使用跳转表，根据对应值按照跳转表进行跳转，跳转表对应数值较大时可以进行相应加减运算处理。跳转表范围较大且表项比较稀疏的时候，可以构建二叉树 二分查找。</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>全局变量在data区域，代码在text区域，局部变量在stack区域，new、malloc的变量在heap区域。</p>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><p>被调用的函数调用结束时，对栈指针进行操作，之后ret弹出返回地址，返回调用函数。</p>
+<p>栈帧管理(每一个函数有自己对应的栈帧)，函数在stack上的储存空间 成为过程的栈帧（stack fram），栈帧会保留需要保留的寄存器 以便在函数调用结束后恢复寄存器原有的值（有的寄存器由caller保存 有的由callee保存）。</p>
+<p>寄存器不足够存放本地数据、对局部变量进行&amp;运算、局部变量为数组或者结构，此时局部变量必须存放在内存中。</p>
+<h2 id="Array-Union-Struct"><a href="#Array-Union-Struct" class="headerlink" title="Array Union Struct"></a>Array Union Struct</h2><p>数组地址顺序排列。结构体地址顺序排列。</p>
+<p>Union所占地址空间大小为其中最大的数据所占地址空间，相当于对同一地址空间的不同部分赋予不同的别名，在使用时按照别名进行类型转换。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="title class_">u</span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> i;</span><br><span class="line">    <span class="type">float</span> f;</span><br><span class="line">&#125;u0;</span><br></pre></td></tr></table></figure>
+<p>则 i 为 f底层float表示方法的 十进制数值。</p>
+<p>sizeof(u0)&#x3D;4<br>size0f(u0.i)&#x3D;sizeof(u0.f)&#x3D;sizeof(u0)&#x3D;4</p>
+<h2 id="数据对齐"><a href="#数据对齐" class="headerlink" title="数据对齐"></a>数据对齐</h2><p>任何K字节的基本对象的地址必须是K的倍数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="type">char</span> j;</span><br><span class="line">    <span class="type">int</span> k;</span><br><span class="line">&#125;t1;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>则 sizeof(t1)&#x3D;12</p>
+<p>i占四字节，j占一字节但是j后面三字节为空以达到数据对齐目的，K占四字节 所以共十二字节。</p>
+<p>同一类型对象尽量放在一起，节省空间。</p>
+<h2 id="内存越界引用和缓冲区溢出"><a href="#内存越界引用和缓冲区溢出" class="headerlink" title="内存越界引用和缓冲区溢出"></a>内存越界引用和缓冲区溢出</h2><p>attack lab就是基于缓冲区溢出后 修改返回地址 达到攻击的效果。</p>
+<p>C对于数组引用不进行边界检查，局部变量和状态信息都保存在stack 越界引用数组容易修改状态信息（返回地址等）进行破坏。</p>
+<p>gets读函数对读入数据大小不进行检查，数据溢出缓冲区会导致stack中信息被破坏。</p>
+<h2 id="防范手段"><a href="#防范手段" class="headerlink" title="防范手段"></a>防范手段</h2><p>写更加strong的代码，进行数据大小检查。</p>
+<p>对stack进行破坏检测，存储canary(金丝雀)值(通常该值 末尾以 0 结尾，即使字符数组溢出1位也不影响,因为字符以0结尾，不会修改canary数值，<del>贴心</del>)</p>
+<p>stack地址随机化</p>
+<p>限制可执行代码区域，</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/EndExam_Of/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/27/EndExam_Of/" class="post-title-link" itemprop="url">关于高考后</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-27 18:20:19 / 修改时间：19:27:34" itemprop="dateCreated datePublished" datetime="2022-06-27T18:20:19+08:00">2022-06-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%89%E6%8B%A9/" itemprop="url" rel="index"><span itemprop="name">选择</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今年一高似乎考的不错。</p>
+<p>下午刚睡醒，和同学在群里吹水时说起了今年的高考，我才发现由于取消了提前 交大在我省的分数线降了不少。我高考那一年，是靠着国家专项计划才来了交大，不然只能走提前批，分数不高的人在交大面前没有选择权，于是被调剂。入学没多久，我一直在后悔当时没有去中科大学物理，哪怕后面发现自己适应不了科大物理系的压力，也可以自由转专业。就这样浑浑噩噩的过了一学期，寒假时了解到交大的转专业对提前批有诸多限制，幸运的是我走国家专项计划不受这些限制，大一下我转入了物院。</p>
+<p>我对交大是充满感激的，正如我在某个平台上的名字‘remake’,我一直感觉自己的大学因为转专业这个决定被重置了，我的大学生活换了一个方式开始，我很感激交大。</p>
+<p>有时候在想，假如当初报了科大或者南大、北航，去学热门专业会怎么样？想了想感觉自己或许会摆烂大学四年。我上大学之前并不是一个自律的人，<del>说得好像我现在是一样</del> 在大学这种自由的环境下，失去了老师的监督，没有面临高考的压力，假如学了CS这些不担心就业的专业，我大概率会跟着培养计划按部就班的摆烂四年。只有经过学化学的磨练，深切体会到英语挂科后的绝望，在挂科后认真思考过自己的出路，<strong>我才明白对于我这样一个背景普通，尚未发现自己有什么天赋的人，学习究竟意味着什么。</strong> </p>
+<p>我思想的改变和交大关系很大，<del>毕竟地狱难度的英语期末考试交大是独一份</del> 现在我还后悔来交大吗？后悔被调剂吗？<strong>我不后悔</strong>。</p>
+<p>动过去学校门口劝学弟学妹们不要为了<strong>不浪费一分</strong>去盲目冲学校的念头。想了想放弃了，各人有各人的际遇，一年前的我还在后悔来了交大，现在我却为自己感到幸运。再者，高考后的学生观念总是充斥着对于名校的向往 <del>我也向往CMU Stanford</del>，小县城出身的我们即使看了知乎上的言论也大都不会相信专业之间的差距远大于学校，总是以为好学校的专业不会是这样子的，这没办法改变。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/EndExam_Of_HighSchool_choice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/27/EndExam_Of_HighSchool_choice/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-27 18:19:37" itemprop="dateCreated datePublished" datetime="2022-06-27T18:19:37+08:00">2022-06-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%89%E6%8B%A9/" itemprop="url" rel="index"><span itemprop="name">选择</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/26/leetcode_note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -183,7 +526,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-19 18:53:21" itemprop="dateModified" datetime="2022-06-19T18:53:21+08:00">2022-06-19</time>
+                <time title="修改时间：2022-06-23 22:31:11" itemprop="dateModified" datetime="2022-06-23T22:31:11+08:00">2022-06-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -196,15 +539,6 @@
             </span>
 
           
-            <span id="/2022/05/26/leetcode_note/" class="post-meta-item leancloud_visitors" data-flag-title="算法题笔记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
 
         </div>
       </header>
@@ -216,7 +550,9 @@
 
       
           <p>开始暑假的集中刷题了，时隔两个月没刷算法，今天发现之前获得的手感和技巧都丧失的差不多了，所以萌生了记笔记的想法。记下一些有价值的题目</p>
-<h1 id="LeetCode-Easy"><a href="#LeetCode-Easy" class="headerlink" title="LeetCode Easy"></a>LeetCode Easy</h1><h2 id="35-搜索插入位置"><a href="#35-搜索插入位置" class="headerlink" title="35 搜索插入位置"></a>35 搜索插入位置</h2><h3 id="二分"><a href="#二分" class="headerlink" title="二分"></a>二分</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">searchInsert</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> left=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right=length<span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">            <span class="type">int</span> now=nums[mid];</span><br><span class="line">            <span class="keyword">if</span>(now&lt;target) left=mid+<span class="number">1</span>; </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(now&gt;target) right=mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> mid;</span><br><span class="line">            mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> right+<span class="number">1</span>; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="LeetCode-Easy"><a href="#LeetCode-Easy" class="headerlink" title="LeetCode Easy"></a>LeetCode Easy</h1><h2 id="剑指offer-05-替换空格"><a href="#剑指offer-05-替换空格" class="headerlink" title="剑指offer 05 替换空格"></a>剑指offer 05 替换空格</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">string <span class="title">replaceSpace</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> length=s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> count=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i]==<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        s.<span class="built_in">resize</span>(length+<span class="number">2</span>*count);</span><br><span class="line">        <span class="type">int</span> old=length<span class="number">-1</span>;<span class="comment">// 从后向前替换 双指针</span></span><br><span class="line">        <span class="type">int</span> n=length+<span class="number">2</span>*count<span class="number">-1</span>;<span class="comment">//n为new </span></span><br><span class="line">        <span class="keyword">while</span>(old&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[old]==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">                s[n--]=<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">                s[n--]=<span class="string">&#x27;2&#x27;</span>;</span><br><span class="line">                s[n--]=<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                s[n--]=s[old];</span><br><span class="line">            &#125;</span><br><span class="line">            old--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>精髓在于，从后向前替换，而不是从前向后替换，后者做法每次替换都要移动后面元素 o(n^2),前者不需要 o(n);因为  从后向前，n走在old后面(相对于前进方向)，从前向后n在old的前面，s[n]依靠s[old],因此 n应该在old后面。</p>
+<h2 id="35-搜索插入位置"><a href="#35-搜索插入位置" class="headerlink" title="35 搜索插入位置"></a>35 搜索插入位置</h2><h3 id="二分"><a href="#二分" class="headerlink" title="二分"></a>二分</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">searchInsert</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> left=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right=length<span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">            <span class="type">int</span> now=nums[mid];</span><br><span class="line">            <span class="keyword">if</span>(now&lt;target) left=mid+<span class="number">1</span>; </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(now&gt;target) right=mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> mid;</span><br><span class="line">            mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> right+<span class="number">1</span>; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>这道题目我的犹豫点在于<strong>循环的时候target是否会落在获得的区间之外</strong>，比如[0，100，110，200] target&#x3D;102,第一次迭代后，nums[left]&#x3D;110；target其实在left的左边，因此在二分处理的时候一直思考很多限制，一个简单的Easy题目却想了很多。后来想明白了，我的犹豫点是对的，但是这不影响什么。</p>
 <p>这道题目，可以找到和target相等的目标值也就罢了（704题），找不到也就是需要插入的时候，要把target插入在两个数字中间的区域，这种情况下 按照从大到小排序，某次迭代后target一定会落在获得的区间旁边的区域，也就是<strong>right和right+1之间或者left和left-1之间</strong>，此后紧挨着target的区间边界left&#x2F;right不动，另一个边界不断移动，直到 right小于left ,此时迭代终止，而target的位置等于right+1也就是在right和left之间；</p>
 <h3 id="二分加暴力"><a href="#二分加暴力" class="headerlink" title="二分加暴力"></a>二分加暴力</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">searchInsert</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> left=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right=length<span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> temp=right-left;</span><br><span class="line">        <span class="keyword">while</span>(temp&gt;<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="type">int</span> mid=left+temp/<span class="number">2</span>;</span><br><span class="line">            <span class="type">int</span> now=nums[mid];</span><br><span class="line">            <span class="keyword">if</span>(now&lt;target) left=mid+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(now&gt;target) right=mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> mid;</span><br><span class="line">            temp=right-left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=left;i&lt;=right;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i]&gt;=target) <span class="keyword">return</span> i;</span><br><span class="line">        &#125; <span class="comment">//这个暴力写法很优雅。</span></span><br><span class="line">        <span class="keyword">return</span> right+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -230,6 +566,15 @@
 <p>这道模拟有点意思，像这种模拟我一直不太在行，打印乘法表这种大一C++作业题我都有点怵，菜鸡本菜了。</p>
 <h2 id="142-环形链表"><a href="#142-环形链表" class="headerlink" title="142 环形链表||"></a>142 环形链表||</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode* slow=head;</span><br><span class="line">        ListNode* fast=head;</span><br><span class="line">        <span class="keyword">if</span>(head==<span class="literal">nullptr</span>||head-&gt;next==<span class="literal">nullptr</span>) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        slow=slow-&gt;next;</span><br><span class="line">        fast=fast-&gt;next-&gt;next; </span><br><span class="line">        <span class="keyword">while</span>(fast!=<span class="literal">nullptr</span>&amp;&amp;fast-&gt;next!=<span class="literal">nullptr</span>&amp;&amp;slow!=fast)&#123;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">            fast=fast-&gt;next-&gt;next;</span><br><span class="line">        &#125;<span class="comment">//fast指针经过的长度 是 slow经过的长度的 2 倍数</span></span><br><span class="line">        <span class="keyword">if</span>(fast==<span class="literal">nullptr</span>||fast-&gt;next==<span class="literal">nullptr</span>) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        slow=head; <span class="comment">//slow从头节点开始 fast从两者在环上相遇的位置开始 两者到入口处长度相等(解方程可得该信息</span></span><br><span class="line">        <span class="keyword">while</span>(slow!=fast)&#123;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">            fast=fast-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fast;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>经典快慢指针做法，后面找环入口用到简单的数学知识。应该设长度，而不是节点数目。</p>
+<h2 id="15-三数之和"><a href="#15-三数之和" class="headerlink" title="15 三数之和"></a>15 三数之和</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">threeSum</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; answer;</span><br><span class="line">        <span class="keyword">if</span>(length&lt;<span class="number">3</span>) <span class="keyword">return</span> answer;</span><br><span class="line">        <span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(),nums.<span class="built_in">end</span>());</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> cur=<span class="number">0</span>;cur&lt;length;cur++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[cur]&gt;<span class="number">0</span>) <span class="keyword">return</span> answer;</span><br><span class="line">            <span class="type">int</span> left=cur+<span class="number">1</span>;</span><br><span class="line">            <span class="type">int</span> right=length<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">if</span>(cur&gt;<span class="number">0</span>&amp;&amp;nums[cur]==nums[cur<span class="number">-1</span>]) <span class="keyword">continue</span>;<span class="comment">// 避免排除 -1 -1 2 这种正确情况 cur 在重复序列的第一个</span></span><br><span class="line">            <span class="comment">// cur重复且nums[cur]对应有正确结果 则会出现重复答案，cur不重复且固定 只考虑left重复，结果一样，cur left 不重复且固定，只考虑right重复，结果也可能重复。</span></span><br><span class="line">            <span class="comment">// 故三种情况均需要去重  </span></span><br><span class="line">            <span class="keyword">while</span>(left&lt;right)&#123;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span>(nums[cur]+nums[right]+nums[left]&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                    right--;<span class="comment">//nums[right] 变为新的数值，但在right=length-1或者上一个判断循环满足三者相加等于0时，不一定变为新的数值，在下一次循环时候才会变化</span></span><br><span class="line">                    <span class="keyword">while</span>(left&lt;right&amp;&amp;nums[right]==nums[right+<span class="number">1</span>]) right--;<span class="comment">// right位置移动到 (新的)重复的序列的 第一个位置，若为最后一个位置，则排除了nums[right]==nums[left]的正确结果</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(nums[cur]+nums[right]+nums[left]&lt;<span class="number">0</span>)&#123;</span><br><span class="line">                    left++;</span><br><span class="line">                    <span class="keyword">while</span>(left&lt;right&amp;&amp;nums[left]==nums[left<span class="number">-1</span>]) left++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    answer.<span class="built_in">push_back</span>(vector&lt;<span class="type">int</span>&gt;&#123;nums[cur],nums[left],nums[right]&#125;);</span><br><span class="line">                    <span class="keyword">while</span>(left&lt;right&amp;&amp;nums[right]==nums[right<span class="number">-1</span>]) right--;<span class="comment">// 去掉right重复，right移动到重复序列的最后一个位置,此时为最后一个是因为 已经符合结果 需要更新数值避免重复。</span></span><br><span class="line">                    <span class="keyword">while</span>(left&lt;right&amp;&amp;nums[left]==nums[left+<span class="number">1</span>]) left++;</span><br><span class="line">                    </span><br><span class="line">                    right--; <span class="comment">//nums[right]变为新的数值 </span></span><br><span class="line">                    left++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> answer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>双指针，去重麻烦。</p>
+<h2 id="四数之和"><a href="#四数之和" class="headerlink" title="四数之和"></a>四数之和</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">fourSum</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; result;</span><br><span class="line">        <span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; nums.<span class="built_in">size</span>(); k++) &#123;</span><br><span class="line">	    <span class="comment">// 剪枝处理</span></span><br><span class="line">            <span class="keyword">if</span> (nums[k] &gt; target &amp;&amp; (nums[k] &gt;= <span class="number">0</span> || target &gt;= <span class="number">0</span>)) &#123;</span><br><span class="line">            	<span class="keyword">break</span>; <span class="comment">// 这里使用break，跳出循环</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 去重 k移动到新的重复序列的最左端 nums[k] 更新, 并且避免排除 -1 -1 -1 3 target为0的正确答案</span></span><br><span class="line">            <span class="keyword">if</span> (k &gt; <span class="number">0</span> &amp;&amp; nums[k] == nums[k - <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = k + <span class="number">1</span>; i &lt; nums.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">	    	<span class="comment">// 2级剪枝处理</span></span><br><span class="line">		        <span class="keyword">if</span> (nums[k] + nums[i] &gt; target &amp;&amp; (nums[k] + nums[i] &gt;= <span class="number">0</span> || target &gt;= <span class="number">0</span>)) &#123;</span><br><span class="line">		            <span class="keyword">break</span>; <span class="comment">// 跳出 二级循环</span></span><br><span class="line">		        &#125;</span><br><span class="line">		</span><br><span class="line">                <span class="comment">// 正确去重方法</span></span><br><span class="line">                <span class="keyword">if</span> (i &gt; k + <span class="number">1</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">int</span> left = i + <span class="number">1</span>;</span><br><span class="line">                <span class="type">int</span> right = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">while</span> (right &gt; left) &#123;</span><br><span class="line">                    <span class="comment">// nums[k] + nums[i] + nums[left] + nums[right] &gt; target 会溢出</span></span><br><span class="line">                    <span class="keyword">if</span> (nums[k] + nums[i] &gt; target - (nums[left] + nums[right])) &#123;</span><br><span class="line">                        right--;</span><br><span class="line">                        <span class="comment">// 当前元素不合适了，可以去重，right移动到新的重复序列的最右端，nums[right]更新</span></span><br><span class="line">                        <span class="keyword">while</span> (left &lt; right &amp;&amp; nums[right] == nums[right + <span class="number">1</span>]) right--;</span><br><span class="line">                    <span class="comment">// nums[k] + nums[i] + nums[left] + nums[right] &lt; target 会溢出</span></span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[k] + nums[i]  &lt; target - (nums[left] + nums[right])) &#123;</span><br><span class="line">                        left++;</span><br><span class="line">                        <span class="comment">// 不合适，去重</span></span><br><span class="line">                        <span class="keyword">while</span> (left &lt; right &amp;&amp; nums[left] == nums[left - <span class="number">1</span>]) left++;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        result.<span class="built_in">push_back</span>(vector&lt;<span class="type">int</span>&gt;&#123;nums[k], nums[i], nums[left], nums[right]&#125;);</span><br><span class="line">                        <span class="comment">// 去重逻辑应该放在找到一个四元组之后</span></span><br><span class="line">                        <span class="keyword">while</span> (right &gt; left &amp;&amp; nums[right] == nums[right - <span class="number">1</span>]) right--;<span class="comment">// right移动到旧重复序列的最左端</span></span><br><span class="line">                        <span class="keyword">while</span> (right &gt; left &amp;&amp; nums[left] == nums[left + <span class="number">1</span>]) left++;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 找到答案时，双指针同时收缩</span></span><br><span class="line">                        right--;<span class="comment">//此时nums[right]才更新</span></span><br><span class="line">                        left++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>经典，需要背诵(×</p>
+<h2 id="151-颠倒字符串单词"><a href="#151-颠倒字符串单词" class="headerlink" title="151 颠倒字符串单词"></a>151 颠倒字符串单词</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">reverse</span><span class="params">(string&amp; s,<span class="type">int</span> begin,<span class="type">int</span> end)</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(begin&lt;end)&#123;</span><br><span class="line">            <span class="built_in">swap</span>(s[begin++],s[end--]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="comment">// 翻转函数 左闭右闭</span></span><br><span class="line"></span><br><span class="line">    <span class="function">string <span class="title">reverseWords</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(s[<span class="number">0</span>]==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">            s.<span class="built_in">erase</span>(s.<span class="built_in">begin</span>());</span><br><span class="line">            </span><br><span class="line">        &#125; <span class="comment">// 清除前面的空格</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">while</span>(s[s.<span class="built_in">size</span>()<span class="number">-1</span>]==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">            s.<span class="built_in">erase</span>(s.<span class="built_in">end</span>()<span class="number">-1</span>);</span><br><span class="line">        &#125;<span class="comment">// 清除后面空格</span></span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> cur=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> length=s.<span class="built_in">size</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> slow=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">reverse</span>(s,<span class="number">0</span>,length<span class="number">-1</span>); <span class="comment">// 整体字符串翻转</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(cur&lt;s.<span class="built_in">size</span>())&#123; <span class="comment">// 删除空格导致size动态变化 所以用s.size() 随时更新 而不是固定的数值</span></span><br><span class="line">            <span class="keyword">if</span>(s[cur]==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">                <span class="built_in">reverse</span>(s,slow,cur<span class="number">-1</span>); <span class="comment">// 局部单词内部翻转</span></span><br><span class="line">                slow=cur+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(cur==s.<span class="built_in">size</span>()<span class="number">-1</span>) <span class="built_in">reverse</span>(s,slow,cur); <span class="comment">// 局部最后一个单词翻转</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span>(s[slow]==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">                s.<span class="built_in">erase</span>(s.<span class="built_in">begin</span>()+slow);</span><br><span class="line">            &#125;<span class="comment">// 清除单词之间多余的空格</span></span><br><span class="line">            </span><br><span class="line">            cur++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>巧妙之处在于，<strong>先整体翻转 后 局部反转</strong>，改变了单词的位置顺序 而 不改变单词内部的字母顺序。</p>
+<p>不足之处在于，reverse时间复杂度为o(n)，加上外面循环o(n),一共为o(n^2)，优化的话可以采用<strong>双指针</strong>，提前清除所有多余空格，时间复杂度为o(n)，代码如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> length=s.<span class="built_in">size</span>();</span><br><span class="line"><span class="type">int</span> slow=<span class="number">0</span>; </span><br><span class="line"><span class="type">int</span> fast=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(fast&lt;length)&#123;</span><br><span class="line">    <span class="keyword">if</span>(s[fast]==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(slow!=<span class="number">0</span>&amp;&amp;s[slow<span class="number">-1</span>]==<span class="string">&#x27; &#x27;</span>) slow--;</span><br><span class="line">        s[slow]=s[fast]; <span class="comment">// 无法去除两端的空格，两侧存在至多一个空格。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        s[slow]=s[fast];</span><br><span class="line">    &#125;</span><br><span class="line">    slow++;</span><br><span class="line">    fast++; <span class="comment">// slow 和 fast 处理也巧妙，夸我一句。</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(s[slow<span class="number">-1</span>]==<span class="string">&#x27; &#x27;</span>) s.<span class="built_in">resize</span>(slow<span class="number">-1</span>);<span class="comment">// 去除后面多余的一个空格</span></span><br><span class="line"><span class="keyword">else</span> s.<span class="built_in">resize</span>(slow);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(s[<span class="number">0</span>]==<span class="string">&#x27; &#x27;</span>) s.<span class="built_in">erase</span>(s.<span class="built_in">beigin</span>());</span><br></pre></td></tr></table></figure>
+<p>清除空格 时间复杂度o(n) </p>
 
       
     </div>
@@ -293,15 +638,6 @@
             </span>
 
           
-            <span id="/2022/05/22/%E8%AE%A1%E7%BD%91_%E5%85%AB%E8%82%A1/" class="post-meta-item leancloud_visitors" data-flag-title="计算机网络" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
 
         </div>
       </header>
@@ -727,15 +1063,6 @@
             </span>
 
           
-            <span id="/2022/05/20/xiazhonghua_suibi/" class="post-meta-item leancloud_visitors" data-flag-title="一位朋友的随笔" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
 
         </div>
       </header>
@@ -794,6 +1121,13 @@
 
               <time title="创建时间：2022-05-20 20:19:31" itemprop="dateCreated datePublished" datetime="2022-05-20T20:19:31+08:00">2022-05-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-27 18:29:57" itemprop="dateModified" datetime="2022-06-27T18:29:57+08:00">2022-06-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -805,15 +1139,6 @@
             </span>
 
           
-            <span id="/2022/05/20/change_major_choice/" class="post-meta-item leancloud_visitors" data-flag-title="来到物理系" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
 
         </div>
       </header>
@@ -827,14 +1152,15 @@
           <p>大学前我找不到自己喜欢的东西，大学后似乎也是这样，学什么感觉都可以、都还行、都能过得去。</p>
 <p>例外的似乎只有物理，我在高中愿意花费宝贵的自习时间在物理上面干一些对高考没有任何价值的东西，单纯思考、反复锤炼自己的看法和观点。不过，<strong>我对于物理也不是那么喜爱，</strong>我更愿意出去晒太阳，和朋友一起散步，玩耍，去看自己喜欢的电影，读自己喜欢的书。</p>
 <p><strong>相比于其他学科，物理已经是我最喜欢的了。</strong></p>
-<p>高考由于志愿填报失误，阴差阳错学了化学。其实我化学一直都很好，中考化学距离满分差一分、高中一个很水的化学竞赛拿了一等奖，同样是全县最好的名次。可是我并不喜欢化学，拿到录取通知书的那一刻，我自嘲道：“难道未来要出现一个不喜欢化学的化学方面的院士吗？”。</p>
+<p>高考由于志愿填报失误，阴差阳错学了化学。其实我化学一直都很好，中考化学距离满分差一分、高中一个很水的化学竞赛拿了一等奖，同样是全县最好的名次。可是我并不喜欢化学，拿到录取通知书的那一刻，我自嘲道：“难道未来要出现一个不喜欢化学的化学方面的院士吗？”。(过于naive</p>
 <p>大一上，我过的浑浑噩噩，学着没有什么感觉的化学知识、做着令我厌恶的化学实验，连带着对于其它课程也产生反感，除了&lt;线性代数&gt;和&lt;高等数学&gt;这两门课程我比较（仅仅是比较）认真的去上课、去写作业，其它课程都是混了过去。转折点在于寒假时候，我突然想到了转专业，转去哪里呢？（此处要提一嘴的是，我大一上的英语挂科了）得益于我还算不错的理解和学习能力，我大一上虽然英语挂科但排名在化院依然是前20%，当时的我想着去学代码好呢还是去学物理好呢？（再提一嘴，我参加的转专业比较简单）</p>
 <p>寒假和大一下，我学了不少东西来探索自己相对来说比较喜欢的学科，C++基础、一些简单的数据结构、csapp前面简单的章节、热力学和统计物理、原子物理的简单的部分、离散数学、图论入门、数学分析等等，大多数都是看看视频、粗略过了一遍，了解它们究竟是学什么的，我对于数学 物理 CS有了大概的了解。粗略量化估计一下的话，我对于物理的喜爱是8分的话、CS是7分、数学是6.5分（恶心的证明 虽然严谨但是繁琐无聊的概念 除外），其它学科则是5分。 但是，考虑到钱途的话，物理是8分、CS是8.5分、数学是6.5分，我也说过了，我对于物理并不是那么喜爱，我更喜欢悠闲自在的生活，而财富是生活的基础。转专业政策下来后，我才发现，<strong>人家不要挂科的，</strong>看了许久，只有物理和数学对于挂科与否没有要求，那还有什么好说的呢？转去物理吧，至少是学自己最喜欢的学科，至少脱离了令我厌恶的化学。于是，义无反顾的转去了物理与天文学院。</p>
 <p>我当时考虑了两点</p>
 <p>第一：晚毕业一年值得吗？现在来说，我很庆幸自己还能多享受一年本科时光，重新来过的大一生活让我沉淀了许多，变化了许多，我摆脱了自己不喜欢的学科，我现在每天都在学自己喜欢的东西，干着自己喜欢的事情（当然，偶尔还是会写烦人的物理实验报告和令人头疼的数学证明），我对于未来有了更加明确的规划，对于自己的人生的掌控力度大了那么一点点。而这些的代价仅仅是晚毕业一年，这太值得了。<strong>我想，没必要去和同龄人比较什么，和自己想要达成的目标去比较就好，人生是自己过的，在我的人生里面，不论在别人看来我过得如何，别人都是配角，自己才是唯一的主角，而电影的进度和精彩与否是由主角决定的。</strong></p>
-<p>第二：物理本科就业很难的，值得吗？我本来就学了有名的天坑化学专业，无所谓物理本科就业如何。目前来说，我倾向于未来写代码，毕竟赚钱自己又比较喜欢CS，钱这东西，对于普通人来说有几个人不喜欢呢？我当初做出转专业的决定的时候对于自己的学习能力是极为自信的，学校风气又倾向于赚钱 转码 转金融，而物理这个专业的学生天生自带聪明 基础扎实的光环，这很cool。</p>
-<p>现在我很满意自己的大学生活，物理专业课对我来说理解上并没有多大难度，我又不追求多么高多么优秀的成绩，对于实验报告又是糊弄下完事，所以我有了大把的时间去学自己想学的东西。我会认真的看物理教材去思考去检验自己的逻辑，而不是为了作业和成绩去做习题和试卷，我很讨厌做过多题目，我仅仅喜欢理解 喜欢探索未知 喜欢锤炼自己的逻辑和知识，虽然做题有助于帮助自己检验和纠正一些认知，但对我来说性价比太低且无趣。我会去学CS方面的课程，操作系统、计算机网络、算法等，去为了自己未来的工作而努力。</p>
-<p>我很喜欢 白如冰 的一句话 大意如下： <strong>学物理要为了成为物理学家而努力、学CS要为了赚钱吃饭而努力。</strong></p>
+<p>第二：物理本科就业很难的，值得吗？我本来就学了有名的天坑化学专业，无所谓物理本科就业如何。目前来说，我倾向于未来写代码，毕竟赚钱自己又比较喜欢CS，钱这东西，对于普通人来说有几个人不喜欢呢？我当初做出转专业的决定的时候对于自己的学习能力是极为自信的，而物理这个专业的学生天生自带聪明 基础扎实的光环，这很cool。(虽然自己知道自己几斤几两就是了，笑）</p>
+<p>现在我很满意自己的大学生活，物理专业课对我来说理解上并没有多大难度，我又不追求多么高多么优秀的成绩，对于实验报告又是糊弄下完事，所以我有了大把的时间去学自己想学的东西。我会认真的看物理教材去思考去检验自己的逻辑，而不是为了作业和成绩去做习题和试卷，我很讨厌做过多题目，我仅仅喜欢理解 喜欢探索未知 喜欢锤炼自己的逻辑和知识，虽然做题有助于帮助自己检验和纠正一些认知，但对我来说性价比太低且无趣。我会去学CS方面的课程，去为了自己未来的工作而努力。</p>
+<p>我很喜欢 白如冰 的一句话 大意如下： <strong>当你学物理的时候，把自己当成要成为物理学家的人；当你学别的东西的时候，把自己当成要靠那个东西活命的人</strong>。 这两点无法同时做到起码要做到其中的一点，最可怕的心态是：<strong>学物理的时候，觉得自己迟早要转行所以没必要搞那么清楚；学其他东西的时候，觉得自己有理科底子在，大概学一下知道怎么用就行。</strong></p>
+<p><strong>学问笃实生光辉</strong></p>
 
       
     </div>
@@ -885,7 +1211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-30 00:19:00" itemprop="dateModified" datetime="2022-05-30T00:19:00+08:00">2022-05-30</time>
+                <time title="修改时间：2022-06-27 20:10:11" itemprop="dateModified" datetime="2022-06-27T20:10:11+08:00">2022-06-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -898,15 +1224,6 @@
             </span>
 
           
-            <span id="/2022/04/30/%E9%9A%8F%E7%AC%94/" class="post-meta-item leancloud_visitors" data-flag-title="一些记录" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
 
         </div>
       </header>
@@ -917,7 +1234,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="我和自己对话，向自己描述世界，以此证明我还活着"><a href="#我和自己对话，向自己描述世界，以此证明我还活着" class="headerlink" title="我和自己对话，向自己描述世界，以此证明我还活着."></a><strong>我和自己对话，向自己描述世界，以此证明我还活着.</strong></h1><h2 id="相见恨早不很晚"><a href="#相见恨早不很晚" class="headerlink" title="相见恨早不很晚"></a>相见恨早不很晚</h2><p>我没有去过很多想去的地方，其实到现在都没有。</p>
+          <h1 id="我和自己对话，向自己描述世界，以此证明我还活着"><a href="#我和自己对话，向自己描述世界，以此证明我还活着" class="headerlink" title="我和自己对话，向自己描述世界，以此证明我还活着."></a><strong>我和自己对话，向自己描述世界，以此证明我还活着.</strong></h1><h2 id="学到破防"><a href="#学到破防" class="headerlink" title="学到破防"></a>学到破防</h2><p>做国外lab的时候总会感到能力上的差距，当我得知CMU的学业压力的时候，我开始反思自己过的是不是太轻松了。</p>
+<p>写lab让我写到破防，去网上找思路看见别人优雅的code的时候感到自己的菜，听教授说 cmu的学生不允许借鉴 参考别人代码，哪怕讨论也只允许在higher的层次上讨论，我为自己的轻松的大学生活感到难过。排除一些天才，学习天赋上人和人之间的差距并不大，能力的差距来源于刻意练习，国外学校的严格要求强迫学生去刻意练习，而我却只会在想不出来的时候去参考别人的代码。</p>
+<p>要改变什么。要在CS STACK 比较完善的时候重新去写这些lab。</p>
+<h2 id="相见恨早不很晚"><a href="#相见恨早不很晚" class="headerlink" title="相见恨早不很晚"></a>相见恨早不很晚</h2><p>我没有去过很多想去的地方，其实到现在都没有。</p>
 <p>小时候的我总会为自己没办法去想去的地方感到失落，总会在听见其他孩童讨论自己的旅游经历时感到失落。</p>
 <p>现在想想感觉当时的自己很可爱，或许对于我们一直希望得到的事物来说，<strong>相见恨早不恨晚</strong>，漫长的等待过程为它们增加了厚重的期待，好像一壶酒慢慢的酿出香气。漫长的等待过程也让我们成长了许多，只有这样当我们品酒的时候才能尝出来其中蕴含的厚重和情感。</p>
 <p>年少时不懂事的经历反而糟蹋了那些风景，看过一次的风景在再看时不会有初见的惊艳，所以我想说，晚一点经历或许会更好，给自己留下足够的期待的时间，给双方都留下成长的时间，这样很美好。</p>
@@ -949,11 +1269,11 @@
 <p>昨天gitee发布通告“开源必须审核”，虽然从来都是使用github，但还是有一股莫名的情绪堆积在心中。</p>
 <p>我们一直都是历史的见证者。</p>
 <h2 id="乱花钱的借口"><a href="#乱花钱的借口" class="headerlink" title="乱花钱的借口"></a>乱花钱的借口</h2><p>消费一定程度上有助于我的学习</p>
-<p>之前一直想学CS却只是单纯做了各种计划而没有实施，充满了幻想却没有任何行动力，在买了ipad后我看了很多很多相关视频，从基础的C++ 到数据结构 计算机网络 操作系统 C++侯捷进阶视频，当CS体系建立起来后，专业书籍读起来也变得不那么枯燥。CSAPP、计算机网络自顶向下、现代操作系统、算法笔记等等，结果是两百个小时左右的视频学习和上千页专业书籍的阅读，而这个良性循环的建立始于ipad。</p>
-<p>今天买的显示屏和机械键盘到手了，更加广阔的视觉体验和良好的打字手感让我突然升腾起来了刷力扣的想法，自从一个多月前刷完了一百多道经典题目后，我再也没有碰过算法题目了，连带着代码量都下降了不少。购买显示屏和机械键盘带来的好处由于时间的短暂还不能体现出来，不过仅仅是想刷力扣的欲望便让我惊喜不已了。</p>
-<p>那就定一个小目标吧，截至暑假结束再刷力扣至少两百道题目。</p>
+<p>之前一直想学CS却只是单纯做了各种计划而没有实施，充满了幻想却没有任何行动力，在买了ipad后我看了很多很多相关视频，从基础的C++ 到数据结构 计算机网络 操作系统 C++侯捷进阶视频，当CS体系初步建立起来后，专业书籍读起来也变得不那么枯燥。CSAPP、计算机网络自顶向下、现代操作系统、算法笔记等等，而这个良性循环的建立始于ipad。</p>
+<p>今天买的显示屏和机械键盘到手了，更加广阔的视觉体验和良好的打字手感让我突然升腾起来了刷力扣的想法，自从一个多月前刷完一百多道题后，被一个题卡着也不想看答案的时候，我再也没有碰过算法题目了，连带着代码量都下降了不少。购买显示屏和机械键盘带来的好处由于时间的短暂还不能体现出来，不过仅仅是想刷力扣的欲望便让我惊喜不已了。</p>
+<p>那就继续前进。</p>
 <h2 id="对话"><a href="#对话" class="headerlink" title="对话"></a>对话</h2><p>对话是需要时间和身心的投入的，人们却总是把自己无意识的回应和未经思考的答复当作对话。</p>
-<p>表情包是表达自己情感的途径，而不是代替文字的手段和无话可说时候的遮羞布。 2022.5</p>
+<p>表情包是表达自己情感的途径，而不是代替文字的手段和无话可说时候的遮羞布。 </p>
 <h2 id="关于爱而不是爱情"><a href="#关于爱而不是爱情" class="headerlink" title="关于爱而不是爱情"></a>关于爱而不是爱情</h2><blockquote>
 <p>爱不是Love，发出Love读音的时候，好似一个想要糖果的小孩在贪婪在索取；爱是Charity，是清冷高贵却又基础到无处不在的。</p>
 </blockquote>
@@ -999,12 +1319,6 @@
 <p>牙龈肿大的时候我会拿牙刷用力去刷，痛但快乐；嘴唇起泡的时候我会反复舔泡，痛但快乐；我并不是控制不住自己不由自主的去干这些事情，我是经过无意义的思考后仍然选择这样干的。深究行为的原动力是<strong>这些东西我不去碰也会给我带来持续性的痛苦，我选择先快速经历大量痛苦，提高自己对于痛苦的耐受性，从而让接下来的日子好过一些。</strong></p>
 <p>鼻子很灵敏但适应性很强，闻到难闻的气味时过一段时间你就会适应，感谢鼻子。千万别以为我会在厕所深吸几口气，以便让自己接下来好过一些，我一般都选择憋气或者换个干净的厕所。我想过那么做但没有实操过，好吧，我实践过那么几次。</p>
 <p>聊起实践，我最近几个月一直有种想要脱光衣服去裸奔的冲动，看见树会萌生爬上去的想法。前者因有人而不能实践，后者因能力而难以实现。好友说，<strong>我返祖了</strong>。  2022.5</p>
-<h2 id="泡面和辣"><a href="#泡面和辣" class="headerlink" title="泡面和辣"></a>泡面和辣</h2><p>第一次买了汤达人泡面，好友说面不好吃、汤很好喝。我吃完感觉很好吃，大概是因为面不能沾染汤的味道有点寡淡的原因，好友才不喜欢吧。</p>
-<p>相比于辣我更喜清淡，只有在聚餐时候喜欢吃一些香辣的重口食物。</p>
-<p>独自吃饭时候，当我心境平和或是愉悦时候 我吃的清淡。当我心情不佳便会吃很多香辣重口的东西。读高三的时候经常吃蒸面条，浇上满满的辣椒。好友问我为什么吃那么多辣椒，我笑了笑并没有回答。其实只是那时候，心里太苦了。</p>
-<h2 id="倾诉"><a href="#倾诉" class="headerlink" title="倾诉"></a>倾诉</h2><p>我不喜欢倾诉自己当下的感情，正如我高三时候不会告诉好友我为什么要吃辣的原因，正如我现在不会说出我为什么那时候心里很苦的原因。</p>
-<p>我说出来的东西都是我真正放下的东西，我放下了那时候选择吃辣的苦，有些东西还没有放下。</p>
-<p><strong>每个人的内心都很丰富，只是有人不喜欢表达，而我想用文字记录下来自己愿意说的东西</strong>。被不熟悉的人看也无妨，能耐着性子看我的记录本身就是对于我的好奇和尊重，所以谢谢屏幕面前的你。</p>
 <h2 id="惜命"><a href="#惜命" class="headerlink" title="惜命"></a>惜命</h2><p><strong>抛开道德</strong>   深夜无人的十字路口，红灯亮着，你会选择无视红灯走过去吗？</p>
 <p>我不会，因为我惜命。深夜的飙车党在心情勃发之时不会关注是否有人闯红灯，所以即使在深夜无人之时我也不会选择闯红灯。</p>
 <h2 id="可爱"><a href="#可爱" class="headerlink" title="可爱"></a>可爱</h2><p>忘记谁问我漂不漂亮了，我说：“每个人都很可爱”。</p>
@@ -1031,7 +1345,16 @@
 <p>他们背后的作者我尚且可以通过购买正版书籍来表达我的感激之情，可是尚未被人格化的他们呢？只能透过一行行文字去看看他们的内心，去将感恩之情化为绵延不绝的动力。</p>
 <p>或许不该将书本和作者割裂开来，可我以为 两者不同，虽是作者创造了他们，但他们有自己的灵魂和内在。</p>
 <p>写到这里忽然想明白了，我感激的是人类的文明，是文明的载体，是知识。</p>
-<h2 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h2><p>形策课上有人提了个问题，忘记了具体表达的语句，不过潜藏的意思是</p>
+<h2 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h2><p>形策课上有人提了个问题，忘记了具体表达的语句，不过潜藏的意思是,未来会如何？老师有一句话说的很好，“在座的各位都是交大的学生，你们对未来的看法也是你们对身边同学的看法，相信他们，也是相信自己”。</p>
+<p>类似的红课，我混了两年，这节线上课是我唯一一次听完整的。</p>
+<h2 id="被这句话触动"><a href="#被这句话触动" class="headerlink" title="被这句话触动"></a>被这句话触动</h2><blockquote>
+<p>对于不幸运的普通人来说，你想发财也好，想有个满意的配偶也好，都不是随随便便的态度就能得到的。如果不是每晚彻夜痛哭痛感自己的弱小，是没有那么强大的执念熬过过程中的苦痛的。痛感自己废物的当下，痛感过去荒废的时间，所以不管别人怎么说都要钻研量化，就是这样。我希望各位不要跟我一样某天后悔自己选的安逸。</p>
+</blockquote>
+<p>刚看上去有种迟式卖弱的感觉，读了之后却感到颤抖。</p>
+<p>我荒废的时间很多很多，多到现在我想起来就会感到悲哀 害怕 和羞愧，我一直在刻意回避这个事实，我不敢“痛感过去荒废的时间”，我不敢承认自己因为自己的自大在高中、在大学浪费了多少时间。</p>
+<p>想起来自己高中时候周末不写作业，在去学校的路上，我告诉自己，“这是你自找的，你自己选择了不写作业就要承担这时候的惶恐和到学校后的匆忙抄写甚至被请家长的后果”。高三的时候，潘ww老师打电话给我家长，让他们领我回家补作业，我没钥匙自然不可能回家，于是自己跑去还没有开学的高二教学楼，坐在楼梯上 看着缓缓落下的太阳写完了那次作业。之后，我还是没有改变自己不写作业的习惯。大概是感觉自己可以承担不写作业的后果，自己明白不写作业对于成绩的影响没有那么大。</p>
+<p>现在看来，当时的我其实并不知道。</p>
+<p>不是一直回首往事，只是难以直面自己过去本应努力却虚度了的时光。</p>
 
       
     </div>
@@ -1095,15 +1418,6 @@
             </span>
 
           
-            <span id="/2022/04/27/some_thinking_about_physics/" class="post-meta-item leancloud_visitors" data-flag-title="关于物理的碎碎念" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
 
         </div>
       </header>
@@ -1140,504 +1454,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/csapp-note2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/14/csapp-note2/" class="post-title-link" itemprop="url">深入理解计算机系统第二章 笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-14 21:27:43" itemprop="dateCreated datePublished" datetime="2022-04-14T21:27:43+08:00">2022-04-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/csapp-%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">csapp-笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/04/14/csapp-note2/" class="post-meta-item leancloud_visitors" data-flag-title="深入理解计算机系统第二章 笔记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="信息的表示和处理"><a href="#信息的表示和处理" class="headerlink" title=" 信息的表示和处理"></a><center> 信息的表示和处理</h1><h2 id="信息存储"><a href="#信息存储" class="headerlink" title="信息存储"></a>信息存储</h2><h4 id="二进制表示法、十六进制表示法"><a href="#二进制表示法、十六进制表示法" class="headerlink" title="二进制表示法、十六进制表示法"></a>二进制表示法、十六进制表示法</h4><blockquote>
-<p>十六进制下每个数位上的数字可单独展开为4个二进制的数，从而快速转换成二进制数字</p>
-</blockquote>
-<h4 id="字数据大小"><a href="#字数据大小" class="headerlink" title="字数据大小"></a>字数据大小</h4><p>位&#x2F;比特——&gt;字节——&gt;字</p>
-<blockquote>
-<p>每台计算机都有一个字长，指明指针数据的标称大小，字长决定的最重要的系统参数就是虚拟地址空间最大大小，对于字长32位机器来说，虚拟地址空间最大大小为 2^32(0–2^32-1)byte,也就是4GB。(字长32位，最多对应2^32个地址，计算机存储数据的最小可寻址内存单位是字节，内存(虚拟内存)中每个字节都有唯一的数字来标识-地址，也就是说1个地址对应空间大小为1字节)</p>
-</blockquote>
-<p>关于char,C的数据类型char表示一个单独的字节，尽管char由于它可以存储文本串中的单个字符而得名，但它也能用来存储整数值。</p>
-<h4 id="寻址和字节数据"><a href="#寻址和字节数据" class="headerlink" title="寻址和字节数据"></a>寻址和字节数据</h4><p>多字节对象被存储为连续的字节序列，对象的地址就是所用字节中最小的地址(开头的地址)，排列对象内容有大端法和小端法两种方法。</p>
-<blockquote>
-<p>大多数intel兼容机型一般采用小端法存储，比如 int num&#x3D;0x01234567，要用四个字节存储,假设67放在地址0x100处，那么45-&gt;0x101,23-&gt;0x102,01-&gt;0x103。大端法存储反过来。</p>
-</blockquote>
-<h4 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h4><blockquote>
-<p><strong>布尔代数</strong> 非 ~ , 且 &amp; , 或 | , 异或 ^ 。C语言支持按位进行布尔运算也就是位级运算。</p>
-</blockquote>
-<blockquote>
-<p><strong>逻辑运算</strong>  C语言单独提供逻辑运算符号 || ， &amp;&amp; ， ！，默认非零的参数表示true，0表示false。</p>
-</blockquote>
-<blockquote>
-<p><strong>移位运算</strong> 左移 右移，右移又分为逻辑右移和算术右移。有符号数一般使用算术右移，无符号数必须使用逻辑右移。</p>
-</blockquote>
-<h2 id="整数表示"><a href="#整数表示" class="headerlink" title="整数表示"></a>整数表示</h2><h4 id="无符号整数表示"><a href="#无符号整数表示" class="headerlink" title="无符号整数表示"></a>无符号整数表示</h4><p>无符号整数不包括负数，正常二进制编码表示即可</p>
-<h4 id="有符号整数表示"><a href="#有符号整数表示" class="headerlink" title="有符号整数表示"></a>有符号整数表示</h4><p>一般有反码 原码 补码三种表示方法，补码表示最常见。原码一般用来表示浮点数。</p>
-<p>补码表示，最高位(w位)的权重为-2^w，而不是正的，其他位的权重不变。</p>
-<h4 id="强制转换"><a href="#强制转换" class="headerlink" title="强制转换"></a>强制转换</h4><p>将有符号整数和无符号整数强制互相转换时，底层源码也就是位模式不变，只是解释的方式变了。</p>
-<p>对于C来说，如果一个运算数是有符号的而另外一个是无符号的，那么C会隐式将有符号参数转换为无符号参数。  除非特别指明 比如 unsigned int 或者 0x123u (末尾的u表示无符号，这是个无符号常量)，否则大多数整数数字默认有符号。</p>
-<p>下面是对于32位机器上最大int类型整数和最小int类型整数的写法（比较奇怪</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> INT_MAX  2147483647 <span class="comment">//  2^31-1,底层编码为 0x7FFFFFFF，除了第三十二位为0 其他位均为1</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INT_MIN  (-INT_MAX - 1)</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="整数的扩展和截断"><a href="#整数的扩展和截断" class="headerlink" title="整数的扩展和截断"></a>整数的扩展和截断</h4><p>书上的内容易于理解，不在赘述。</p>
-<h2 id="整数运算"><a href="#整数运算" class="headerlink" title="整数运算"></a>整数运算</h2><blockquote>
-<p>我的理解，本质都是正常运算(十进制正常运算)后用二进制编码表示，溢出的位进行截断处理</p>
-</blockquote>
-<p>唯一值得一提的是</p>
-<ol>
-<li>两个相同的位级编码，分别经过无符号乘法和补码乘法(有符号)后，不论是否溢出进行截断处理后，得到结果的位级编码仍然一样。这就是 无符号和补码乘法的位级等价性。</li>
-<li>乘以2的n次幂用左移n位实现，除以2的n次幂，无符号数逻辑右移n位实现，有符号数算术右移n位实现。</li>
-</ol>
-<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>在学习数值分析中了解的很深入了，在阅读时略过了这部分内容。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/10/csapp-note1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/10/csapp-note1/" class="post-title-link" itemprop="url">深入理解计算机系统第一章 笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-10 20:10:29" itemprop="dateCreated datePublished" datetime="2022-04-10T20:10:29+08:00">2022-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-15 12:08:29" itemprop="dateModified" datetime="2022-04-15T12:08:29+08:00">2022-04-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/csapp-%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">csapp-笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/04/10/csapp-note1/" class="post-meta-item leancloud_visitors" data-flag-title="深入理解计算机系统第一章 笔记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="计算机系统漫游"><a href="#计算机系统漫游" class="headerlink" title="计算机系统漫游"></a><center>计算机系统漫游</h1><h3 id="信息就是位＋上下文"><a href="#信息就是位＋上下文" class="headerlink" title="信息就是位＋上下文"></a>信息就是位＋上下文</h3><p>系统中的信息都是由一串比特表示的，在不同的上下文中，一个同样的字节序列可能表示一个整数、浮点数、字符串或者机器指令。</p>
-<blockquote>
-<p><em><strong>此处的</strong></em>上下文在我的理解中就是数据的类型 int char float等</p>
-</blockquote>
-<h3 id="程序被其他程序翻译成不同的格式"><a href="#程序被其他程序翻译成不同的格式" class="headerlink" title="程序被其他程序翻译成不同的格式"></a>程序被其他程序翻译成不同的格式</h3><p>一段简单的程序 hello.c</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在linux系统上被GCC翻译时经历以下四个阶段</p>
-<ol>
-<li>预处理器根据头文件将程序修改为另一个C程序   此时文件为hello.i</li>
-<li>编译器将程序编译成汇编语言   此时文件为hello.s</li>
-<li>汇编器将汇编程序翻译成机器语言指令并打包成可重定位目标程序的格式，保存在hello.o二进制文件中此时程序为01二进制表示的一串数字序列   此时文件为hello.o</li>
-<li>链接器将printf函数的可重定位目标程序文件printf.o合并到该原始文件hello.o中 最终得到hello 文件    此时文件为hello</li>
-</ol>
-<h3 id="系统的硬件组成"><a href="#系统的硬件组成" class="headerlink" title="系统的硬件组成"></a>系统的硬件组成</h3><p>CPU I&#x2F;O设备（磁盘、鼠标、显示器、键盘等） 内存（主存） 总线</p>
-<p>CPU由 PC(程序计数器 指向要操作的指令的地址) 寄存器文件(由寄存器组成 寄存器为大小为一个字的存储设备) ALU(用于计算) 等其他设备(比如cache)组成,CPU可执行这些操作</p>
-<ol>
-<li>加载：从内存复制一个字节&#x2F;一个字到寄存器，覆盖寄存器原来内容</li>
-<li>操作：把两个寄存器内容复制到ALU，ALU进行运算后把内容存放到一个寄存器中，覆盖寄存器中的原内容</li>
-<li>存储：从寄存器中复制内容到内存中</li>
-<li>跳转：从指令中复制内容到PC中，覆盖PC的原来内容</li>
-</ol>
-<h3 id="高速缓存-cache-和存储设备"><a href="#高速缓存-cache-和存储设备" class="headerlink" title="高速缓存(cache)和存储设备"></a>高速缓存(cache)和存储设备</h3><p>以下存储器层次结构 左方可以看成是右方的高速缓存</p>
-<blockquote>
-<p>寄存器-L1高速缓存-L2高速缓存-L3高速缓存-内存-磁盘-远程存储<br>L1 L2 L3高速缓存是因为CPU访问内存太慢依据<strong>局部性原理</strong>而诞生的</p>
-</blockquote>
-<h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><p>以普通单核CPU为例子，进程为程序加上程序运行所需要的资源空间，线程为进程中程序的子部分，同一进程的线程共享该进程的所有数据。<br><strong>CPU中实际运行的是线程</strong> 但用户看见的只有进程</p>
-<h3 id="四个抽象"><a href="#四个抽象" class="headerlink" title="四个抽象"></a>四个抽象</h3><ol>
-<li>I&#x2F;O设备抽象成文件，用户看来操作系统通过操作设备对应的文件(鼠标文件 显示器文件等)来控制I&#x2F;O设备，网络也可以看成一种I&#x2F;O设备即文件。</li>
-<li>文件和主存抽象成虚拟内存</li>
-</ol>
-<blockquote>
-<p>虚拟地址空间：(<strong>和虚拟内存不是一个概念</strong>)在每个进程看来自己独占整个操作系统，实际上每个进程所看到的都是虚拟地址空间，虚拟地址经过映射指向实际的地址空间.<strong>编写代码的指针的数值实际上是虚拟地址，并没有指向实际的地址空间</strong></p>
-</blockquote>
-<blockquote>
-<p>虚拟内存：将所有存储设备(磁盘、网络文件等)都看成内存的一部分，对用户进程来说它们都是内存，是一个非常大的连续的字节数组，但实际上是虚拟内存。当进程要使用不在内存的内容时操作系统会把这些内容调进内存中。</p>
-</blockquote>
-<blockquote>
-<p><strong>虚拟内存</strong>作为一个概念是内存可以有不同的支持。进程的一些内存可以在磁盘上，一些在主内存中，有些甚至可以在远程网络上。这是由操作系统管理的，对正在运行的用户进程是透明的。对于用户进程来说，它只是内存。<strong>虚拟地址空间</strong>意味着映射到用户进程的内存地址。两个不同的用户进程访问（对它们）内存中的相同地址，但它们将包含完全不同的数据。如果用户地址空间很小（如 32 位），这一点尤其重要。这意味着每个进程都可以访问地址空间允许的尽可能多的内存，无论进程如何存在。<em>在操作系统中，它们中的每一个都可以在没有另一个的情况下存在。但是它们结合起来是最有用的，因此通常由操作系统以紧密耦合的方式实现。</em></p>
-</blockquote>
-<ol>
-<li>虚拟内存＋处理器抽象成进程(一个正在运行的程序的抽象)</li>
-<li>进程＋操作系统抽象成虚拟机</li>
-</ol>
-<h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h3><ol>
-<li>并发</li>
-</ol>
-<blockquote>
-<p>CPU只能同时运转一个进程，当进程需要处理一些耗费时间较长且不需要CPU操作的事情时，CPU会去执行下一个进程，此时操作系统会保存被切换进程运行所需要的所有状态信息，也就是上下文信息。这被称为进程切换<br>并发就是CPU不断切换执行的进程来提高CPU的利用率，好比一个单人跑道上面 A跑累了切换成B去跑,B跑累了切换成C去跑，每个人都记住自己被切换时停止的位置信息(即上下文信息)，轮到他跑步时从原来位置接着跑</p>
-</blockquote>
-<ol start="2">
-<li>并行</li>
-</ol>
-<p>线程级并发</p>
-<blockquote>
-<p><strong>这是并发并不是并行</strong>，早期操作系统没有线程这个概念，进行进程切换更新上下文信息代价过大(切换指令以及切换资源空间)，切换线程只需要切换指令，速度很快。</p>
-</blockquote>
-<blockquote>
-<p><strong>用户级线程和核心级线程</strong>：用户级线程并不涉及内核中，当用户级线程堵塞时候，操作系统会以为整个进程堵塞从而切换进程。核心级线程分为内核部分和用户部分，所以核心级线程堵塞时候操作系统可以“看到”从而切换到另一个核心级线程(不一定是同一个进程下)，该切换操作在内核部分完成，之后可以返回到用户部分。</p>
-</blockquote>
-<p>线程级并行</p>
-<blockquote>
-<p>超线程技术(Hyper-Threading) 一个物理核心同时运行两个线程，称为虚拟内核；</p>
-</blockquote>
-<blockquote>
-<p>多核技术(物理上多个核心)，即多个CPU</p>
-</blockquote>
-<p>指令集并行</p>
-<blockquote>
-<p>CPU采用流水线技术同时执行多条指令，举个例子：两双鞋子需要加工 鞋底 鞋带，一个机器上只能同时加工一个鞋底和一个鞋带，那么就先加工A鞋子的鞋底和B鞋子的鞋带然后在加工B鞋子的鞋底和A鞋子的鞋带，即为流水线技术。</p>
-</blockquote>
-<p>多数据并行</p>
-<blockquote>
-<p>一个指令对应一个操作，多数据并行运用SIMD技术可以一个指令执行更多操作数提供更快的运行速度。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/07/os-note1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/07/os-note1/" class="post-title-link" itemprop="url">进程读写磁盘简要过程(Linux)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-07 21:12:01" itemprop="dateCreated datePublished" datetime="2022-04-07T21:12:01+08:00">2022-04-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-08 13:06:44" itemprop="dateModified" datetime="2022-04-08T13:06:44+08:00">2022-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OS%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OS笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/04/07/os-note1/" class="post-meta-item leancloud_visitors" data-flag-title="进程读写磁盘简要过程(Linux)" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="进程读写磁盘简要过程-Linux-0-11"><a href="#进程读写磁盘简要过程-Linux-0-11" class="headerlink" title=" 进程读写磁盘简要过程(Linux-0.11)"></a><center> 进程读写磁盘简要过程(Linux-0.11)</h1><ol>
-<li><p>请求进程从用户态进入内核态  </p>
-<ol>
-<li>进程在用户态调用read函数 输入参数  <blockquote>
-<p>read 展成int 0X80，进入内核态。system_call进行-根据传入参数查表 sys_call_table-真正调用sys_read（在内核态真正操作的函数）</p>
-</blockquote>
-</li>
-</ol>
-</li>
-<li><p>唤醒磁盘驱动程序  </p>
-<ol>
-<li>通过根目录的FCB找到根目录的数据块 不断解析找到对应文件的FCB    </li>
-<li>根据文件的FCB数据和读取的字节位置确定盘块号  </li>
-<li>盘块号等参数写入电梯队列</li>
-<li>唤醒磁盘驱动程序，请求进程阻塞</li>
-<li>CPU调度执行其他进程</li>
-</ol>
-</li>
-<li><p>磁盘驱动程序运行(缓冲区并无相应缓存)  </p>
-<ol>
-<li>根据盘块号算出CHS </li>
-<li>组织通道程序发送相关参数 </li>
-<li>启动通道与设备，准备I&#x2F;O操作（磁盘发出中断信号）</li>
-</ol>
-</li>
-<li><p>CPU响应磁盘中断信号  </p>
-<ol>
-<li>CPU（此时正在执行其他进程）响应设备响应中断</li>
-<li>被中断的进程信息被压入中断栈中，CPU通过外中断进入核态，执行中断处理程序</li>
-<li>CPU使磁盘设备驱动程序转入相应的中断处理程序</li>
-<li>CPU分析中断原因，进行中断处理</li>
-<li>CPU从中断返回</li>
-</ol>
-</li>
-<li><p>I&#x2F;O中断处理程序（磁盘设备驱动程序）把数据传送到请求进程数据栈中，唤醒请求进程</p>
-</li>
-<li><p>请求者进程被CPU更据调度算法再次执行时，弹栈返回用户态。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/05/blog-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/05/blog-1/" class="post-title-link" itemprop="url">因疫情被隔离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-05 22:03:38" itemprop="dateCreated datePublished" datetime="2022-04-05T22:03:38+08:00">2022-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-20 20:12:43" itemprop="dateModified" datetime="2022-05-20T20:12:43+08:00">2022-05-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/04/05/blog-1/" class="post-meta-item leancloud_visitors" data-flag-title="因疫情被隔离" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>王小波在黄金时代中说过</p>
-<blockquote>
-<p>每个人的本性都是好吃懒做，好色贪淫，假如你克勤克俭，守身如玉，这就犯了矫饰之罪，比好吃懒做好色贪淫更可恶。</p>
-</blockquote>
-<p>其中的反讽意味如今读来越发透彻。</p>
-<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>之前的我网上冲浪时看见各种令人心痛、愤怒的消息时候常常会告诉自己</p>
-<blockquote>
-<p>互联网放大了局部的悲惨，让你以为这就是世界的全部，你不用闭上眼睛假装看不见但也不用过多沉溺于怀疑之中，多着眼于身边人，多感受世界的美好。</p>
-</blockquote>
-<p>现在却越发觉得，我或许一开始就理解错了世界，世界或许也很委屈，自己一直就是这样子，只是我理解错了而已。越发能体会到什么是</p>
-<blockquote>
-<p>天地不仁，以万物为刍狗。</p>
-</blockquote>
-<p>终于，我开始慢慢接受这个真实的世界，它本来就是这个样子，漫长岁月里从未改变，我总是以为光明是多于黑暗的，事实上，正邪、光暗、善恶从来都是成对出现互相纠缠成螺旋态存在于这个世界上的。</p>
-<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><p>越发敬佩教员的伟大，遵从世界的规则 顺势而为，从未放弃人民，带着更多的人民抵御着黑暗向着光明迈了出去。面对黑暗，他想着承认它团结它改变它，而我仅仅只会愤怒。</p>
-<h3 id="4"><a href="#4" class="headerlink" title="4"></a>4</h3><p>我的愤怒其实是极其狭隘的</p>
-<blockquote>
-<p>当你试图轻易批评一个人时，要想想，对方或许根本不具备你那样的条件。</p>
-</blockquote>
-<h3 id="5"><a href="#5" class="headerlink" title="5"></a>5</h3><p>向绝对光明要求，外面一片漆黑。站在幽暗深渊中，万物之中都有光明。</p>
-<blockquote>
-<p>如果说恃强凌弱和好色贪淫是人身为动物的天性，那么文明和同理心或许就是人身上最珍贵的品质的反击。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1701,7 +1522,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1800,35 +1621,6 @@
   
 
   
-
-
-<script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : false,
-      appId      : 'KPXf4FxvdkbIBgVY6mS8Ugpm-gzGzoHsz',
-      appKey     : 'ipjkKUckMDgBvY9lYfIm57vy',
-      placeholder: "Just comment",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : true,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : false,
-      serverURLs : ''
-    });
-  }, window.Valine);
-});
-</script>
 
 </body>
 </html>

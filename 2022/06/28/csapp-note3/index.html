@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="大学前我找不到自己喜欢的东西，大学后似乎也是这样，学什么感觉都可以、都还行、都能过得去。 例外的似乎只有物理，我在高中愿意花费宝贵的自习时间在物理上面干一些对高考没有任何价值的东西，单纯思考、反复锤炼自己的看法和观点。不过，我对于物理也不是那么喜爱，我更愿意出去晒太阳，和朋友一起散步，玩耍，去看自己喜欢的电影，读自己喜欢的书。 相比于其他学科，物理已经是我最喜欢的了。 高考由于志愿填报失误，阴差阳">
+  <meta name="description" content="程序的机器级表示隐藏的东西 in higher程序计数器PC，寄存器(整数寄存器，浮点数寄存器，条件码寄存器)。寄存器可以操作不储存不同字节大小的数据。 阅读汇编代码反汇编得到汇编代码 了解各个指令的具体含义，sub、movb、movzbw、leaq等等。学会阅读不同的操作数格式。 控制语句根据条件码寄存器跳转到指定位置，以达到循环语句和判断语句的效果。 switch使用跳转表，根据对应值按照跳转">
 <meta property="og:type" content="article">
-<meta property="og:title" content="来到物理系">
-<meta property="og:url" content="http://example.com/2022/05/20/change_major_choice/index.html">
+<meta property="og:title" content="深入理解计算机系统第三章 笔记">
+<meta property="og:url" content="http://example.com/2022/06/28/csapp-note3/index.html">
 <meta property="og:site_name" content="源之居">
-<meta property="og:description" content="大学前我找不到自己喜欢的东西，大学后似乎也是这样，学什么感觉都可以、都还行、都能过得去。 例外的似乎只有物理，我在高中愿意花费宝贵的自习时间在物理上面干一些对高考没有任何价值的东西，单纯思考、反复锤炼自己的看法和观点。不过，我对于物理也不是那么喜爱，我更愿意出去晒太阳，和朋友一起散步，玩耍，去看自己喜欢的电影，读自己喜欢的书。 相比于其他学科，物理已经是我最喜欢的了。 高考由于志愿填报失误，阴差阳">
+<meta property="og:description" content="程序的机器级表示隐藏的东西 in higher程序计数器PC，寄存器(整数寄存器，浮点数寄存器，条件码寄存器)。寄存器可以操作不储存不同字节大小的数据。 阅读汇编代码反汇编得到汇编代码 了解各个指令的具体含义，sub、movb、movzbw、leaq等等。学会阅读不同的操作数格式。 控制语句根据条件码寄存器跳转到指定位置，以达到循环语句和判断语句的效果。 switch使用跳转表，根据对应值按照跳转">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-20T12:19:31.759Z">
-<meta property="article:modified_time" content="2022-06-27T10:29:57.122Z">
+<meta property="article:published_time" content="2022-06-28T10:36:21.120Z">
+<meta property="article:modified_time" content="2022-06-29T06:46:18.413Z">
 <meta property="article:author" content="FY-Zhu">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/05/20/change_major_choice/">
+<link rel="canonical" href="http://example.com/2022/06/28/csapp-note3/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>来到物理系 | 源之居</title>
+  <title>深入理解计算机系统第三章 笔记 | 源之居</title>
   
 
 
@@ -155,7 +155,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/20/change_major_choice/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/csapp-note3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -168,7 +168,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          来到物理系
+          深入理解计算机系统第三章 笔记
         </h1>
 
         <div class="post-meta">
@@ -178,14 +178,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-05-20 20:19:31" itemprop="dateCreated datePublished" datetime="2022-05-20T20:19:31+08:00">2022-05-20</time>
+              <time title="创建时间：2022-06-28 18:36:21" itemprop="dateCreated datePublished" datetime="2022-06-28T18:36:21+08:00">2022-06-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-27 18:29:57" itemprop="dateModified" datetime="2022-06-27T18:29:57+08:00">2022-06-27</time>
+                <time title="修改时间：2022-06-29 14:46:18" itemprop="dateModified" datetime="2022-06-29T14:46:18+08:00">2022-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -193,7 +193,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%80%89%E6%8B%A9/" itemprop="url" rel="index"><span itemprop="name">选择</span></a>
+                  <a href="/categories/csapp-%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">csapp-笔记</span></a>
                 </span>
             </span>
 
@@ -208,18 +208,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>大学前我找不到自己喜欢的东西，大学后似乎也是这样，学什么感觉都可以、都还行、都能过得去。</p>
-<p>例外的似乎只有物理，我在高中愿意花费宝贵的自习时间在物理上面干一些对高考没有任何价值的东西，单纯思考、反复锤炼自己的看法和观点。不过，<strong>我对于物理也不是那么喜爱，</strong>我更愿意出去晒太阳，和朋友一起散步，玩耍，去看自己喜欢的电影，读自己喜欢的书。</p>
-<p><strong>相比于其他学科，物理已经是我最喜欢的了。</strong></p>
-<p>高考由于志愿填报失误，阴差阳错学了化学。其实我化学一直都很好，中考化学距离满分差一分、高中一个很水的化学竞赛拿了一等奖，同样是全县最好的名次。可是我并不喜欢化学，拿到录取通知书的那一刻，我自嘲道：“难道未来要出现一个不喜欢化学的化学方面的院士吗？”。(过于naive</p>
-<p>大一上，我过的浑浑噩噩，学着没有什么感觉的化学知识、做着令我厌恶的化学实验，连带着对于其它课程也产生反感，除了&lt;线性代数&gt;和&lt;高等数学&gt;这两门课程我比较（仅仅是比较）认真的去上课、去写作业，其它课程都是混了过去。转折点在于寒假时候，我突然想到了转专业，转去哪里呢？（此处要提一嘴的是，我大一上的英语挂科了）得益于我还算不错的理解和学习能力，我大一上虽然英语挂科但排名在化院依然是前20%，当时的我想着去学代码好呢还是去学物理好呢？（再提一嘴，我参加的转专业比较简单）</p>
-<p>寒假和大一下，我学了不少东西来探索自己相对来说比较喜欢的学科，C++基础、一些简单的数据结构、csapp前面简单的章节、热力学和统计物理、原子物理的简单的部分、离散数学、图论入门、数学分析等等，大多数都是看看视频、粗略过了一遍，了解它们究竟是学什么的，我对于数学 物理 CS有了大概的了解。粗略量化估计一下的话，我对于物理的喜爱是8分的话、CS是7分、数学是6.5分（恶心的证明 虽然严谨但是繁琐无聊的概念 除外），其它学科则是5分。 但是，考虑到钱途的话，物理是8分、CS是8.5分、数学是6.5分，我也说过了，我对于物理并不是那么喜爱，我更喜欢悠闲自在的生活，而财富是生活的基础。转专业政策下来后，我才发现，<strong>人家不要挂科的，</strong>看了许久，只有物理和数学对于挂科与否没有要求，那还有什么好说的呢？转去物理吧，至少是学自己最喜欢的学科，至少脱离了令我厌恶的化学。于是，义无反顾的转去了物理与天文学院。</p>
-<p>我当时考虑了两点</p>
-<p>第一：晚毕业一年值得吗？现在来说，我很庆幸自己还能多享受一年本科时光，重新来过的大一生活让我沉淀了许多，变化了许多，我摆脱了自己不喜欢的学科，我现在每天都在学自己喜欢的东西，干着自己喜欢的事情（当然，偶尔还是会写烦人的物理实验报告和令人头疼的数学证明），我对于未来有了更加明确的规划，对于自己的人生的掌控力度大了那么一点点。而这些的代价仅仅是晚毕业一年，这太值得了。<strong>我想，没必要去和同龄人比较什么，和自己想要达成的目标去比较就好，人生是自己过的，在我的人生里面，不论在别人看来我过得如何，别人都是配角，自己才是唯一的主角，而电影的进度和精彩与否是由主角决定的。</strong></p>
-<p>第二：物理本科就业很难的，值得吗？我本来就学了有名的天坑化学专业，无所谓物理本科就业如何。目前来说，我倾向于未来写代码，毕竟赚钱自己又比较喜欢CS，钱这东西，对于普通人来说有几个人不喜欢呢？我当初做出转专业的决定的时候对于自己的学习能力是极为自信的，而物理这个专业的学生天生自带聪明 基础扎实的光环，这很cool。(虽然自己知道自己几斤几两就是了，笑）</p>
-<p>现在我很满意自己的大学生活，物理专业课对我来说理解上并没有多大难度，我又不追求多么高多么优秀的成绩，对于实验报告又是糊弄下完事，所以我有了大把的时间去学自己想学的东西。我会认真的看物理教材去思考去检验自己的逻辑，而不是为了作业和成绩去做习题和试卷，我很讨厌做过多题目，我仅仅喜欢理解 喜欢探索未知 喜欢锤炼自己的逻辑和知识，虽然做题有助于帮助自己检验和纠正一些认知，但对我来说性价比太低且无趣。我会去学CS方面的课程，去为了自己未来的工作而努力。</p>
-<p>我很喜欢 白如冰 的一句话 大意如下： <strong>当你学物理的时候，把自己当成要成为物理学家的人；当你学别的东西的时候，把自己当成要靠那个东西活命的人</strong>。 这两点无法同时做到起码要做到其中的一点，最可怕的心态是：<strong>学物理的时候，觉得自己迟早要转行所以没必要搞那么清楚；学其他东西的时候，觉得自己有理科底子在，大概学一下知道怎么用就行。</strong></p>
-<p><strong>学问笃实生光辉</strong></p>
+        <h1 id="程序的机器级表示"><a href="#程序的机器级表示" class="headerlink" title="程序的机器级表示"></a>程序的机器级表示</h1><h2 id="隐藏的东西-in-higher"><a href="#隐藏的东西-in-higher" class="headerlink" title="隐藏的东西 in higher"></a>隐藏的东西 in higher</h2><p>程序计数器PC，寄存器(整数寄存器，浮点数寄存器，条件码寄存器)。寄存器可以操作不储存不同字节大小的数据。</p>
+<h2 id="阅读汇编代码"><a href="#阅读汇编代码" class="headerlink" title="阅读汇编代码"></a>阅读汇编代码</h2><p>反汇编得到汇编代码</p>
+<p>了解各个指令的具体含义，sub、movb、movzbw、leaq等等。学会阅读不同的操作数格式。</p>
+<h2 id="控制语句"><a href="#控制语句" class="headerlink" title="控制语句"></a>控制语句</h2><p>根据条件码寄存器跳转到指定位置，以达到循环语句和判断语句的效果。</p>
+<p>switch使用跳转表，根据对应值按照跳转表进行跳转，跳转表对应数值较大时可以进行相应加减运算处理。跳转表范围较大且表项比较稀疏的时候，可以构建二叉树 二分查找。</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>全局变量在data区域，代码在text区域，局部变量在stack区域，new、malloc的变量在heap区域。</p>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><p>被调用的函数调用结束时，对栈指针进行操作，之后ret弹出返回地址，返回调用函数。</p>
+<p>栈帧管理(每一个函数有自己对应的栈帧)，函数在stack上的储存空间 成为过程的栈帧（stack fram），栈帧会保留需要保留的寄存器 以便在函数调用结束后恢复寄存器原有的值（有的寄存器由caller保存 有的由callee保存）。</p>
+<p>寄存器不足够存放本地数据、对局部变量进行&amp;运算、局部变量为数组或者结构，此时局部变量必须存放在内存中。</p>
+<h2 id="Array-Union-Struct"><a href="#Array-Union-Struct" class="headerlink" title="Array Union Struct"></a>Array Union Struct</h2><p>数组地址顺序排列。结构体地址顺序排列。</p>
+<p>Union所占地址空间大小为其中最大的数据所占地址空间，相当于对同一地址空间的不同部分赋予不同的别名，在使用时按照别名进行类型转换。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="title class_">u</span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> i;</span><br><span class="line">    <span class="type">float</span> f;</span><br><span class="line">&#125;u0;</span><br></pre></td></tr></table></figure>
+<p>则 i 为 f底层float表示方法的 十进制数值。</p>
+<p>sizeof(u0)&#x3D;4<br>size0f(u0.i)&#x3D;sizeof(u0.f)&#x3D;sizeof(u0)&#x3D;4</p>
+<h2 id="数据对齐"><a href="#数据对齐" class="headerlink" title="数据对齐"></a>数据对齐</h2><p>任何K字节的基本对象的地址必须是K的倍数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="type">char</span> j;</span><br><span class="line">    <span class="type">int</span> k;</span><br><span class="line">&#125;t1;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>则 sizeof(t1)&#x3D;12</p>
+<p>i占四字节，j占一字节但是j后面三字节为空以达到数据对齐目的，K占四字节 所以共十二字节。</p>
+<p>同一类型对象尽量放在一起，节省空间。</p>
+<h2 id="内存越界引用和缓冲区溢出"><a href="#内存越界引用和缓冲区溢出" class="headerlink" title="内存越界引用和缓冲区溢出"></a>内存越界引用和缓冲区溢出</h2><p>attack lab就是基于缓冲区溢出后 修改返回地址 达到攻击的效果。</p>
+<p>C对于数组引用不进行边界检查，局部变量和状态信息都保存在stack 越界引用数组容易修改状态信息（返回地址等）进行破坏。</p>
+<p>gets读函数对读入数据大小不进行检查，数据溢出缓冲区会导致stack中信息被破坏。</p>
+<h2 id="防范手段"><a href="#防范手段" class="headerlink" title="防范手段"></a>防范手段</h2><p>写更加strong的代码，进行数据大小检查。</p>
+<p>对stack进行破坏检测，存储canary(金丝雀)值(通常该值 末尾以 0 结尾，即使字符数组溢出1位也不影响,因为字符以0结尾，不会修改canary数值，<del>贴心</del>)</p>
+<p>stack地址随机化</p>
+<p>限制可执行代码区域，</p>
 
     </div>
 
@@ -235,12 +250,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/30/%E9%9A%8F%E7%AC%94/" rel="prev" title="一些记录">
-      <i class="fa fa-chevron-left"></i> 一些记录
+    <a href="/2022/06/27/EndExam_Of/" rel="prev" title="关于高考后">
+      <i class="fa fa-chevron-left"></i> 关于高考后
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/05/20/xiazhonghua_suibi/" rel="next" title="一位朋友的随笔">
-      一位朋友的随笔 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/06/30/csapp-note4/" rel="next" title="深入理解计算机系统第五章第六章 笔记">
+      深入理解计算机系统第五章第六章 笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -300,6 +315,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">程序的机器级表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%9A%84%E4%B8%9C%E8%A5%BF-in-higher"><span class="nav-number">1.1.</span> <span class="nav-text">隐藏的东西 in higher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">阅读汇编代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.3.</span> <span class="nav-text">控制语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">1.4.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stack"><span class="nav-number">1.5.</span> <span class="nav-text">Stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Array-Union-Struct"><span class="nav-number">1.6.</span> <span class="nav-text">Array Union Struct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%B9%E9%BD%90"><span class="nav-number">1.7.</span> <span class="nav-text">数据对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E8%B6%8A%E7%95%8C%E5%BC%95%E7%94%A8%E5%92%8C%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA"><span class="nav-number">1.8.</span> <span class="nav-text">内存越界引用和缓冲区溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E8%8C%83%E6%89%8B%E6%AE%B5"><span class="nav-number">1.9.</span> <span class="nav-text">防范手段</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
