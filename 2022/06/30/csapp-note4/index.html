@@ -22,13 +22,13 @@
 
   <meta name="description" content="优化程序性能编译器优化现代编译器已经非常成熟，优化后的代码有时候程序员自己都看不懂。 但是，编译器还是保守，假设你的每个操作都是黑盒子，小心翼翼在不会影响你的操作的前提下进行优化，编译器必须很小心的使用安全的优化 关于指针的例子1234void test(int *pt1,int *pt2)&amp;#123;    *pt1+&#x3D;*pt2;    *pt1+&#x3D;*pt2;&amp;#125; 假设我们的本意是 pt">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深入理解计算机系统第五章第六章 笔记">
+<meta property="og:title" content="深入理解计算机系统第五章笔记">
 <meta property="og:url" content="http://example.com/2022/06/30/csapp-note4/index.html">
 <meta property="og:site_name" content="源之居">
 <meta property="og:description" content="优化程序性能编译器优化现代编译器已经非常成熟，优化后的代码有时候程序员自己都看不懂。 但是，编译器还是保守，假设你的每个操作都是黑盒子，小心翼翼在不会影响你的操作的前提下进行优化，编译器必须很小心的使用安全的优化 关于指针的例子1234void test(int *pt1,int *pt2)&amp;#123;    *pt1+&#x3D;*pt2;    *pt1+&#x3D;*pt2;&amp;#125; 假设我们的本意是 pt">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-30T03:38:12.293Z">
-<meta property="article:modified_time" content="2022-06-30T05:29:23.473Z">
+<meta property="article:modified_time" content="2022-07-13T13:15:17.848Z">
 <meta property="article:author" content="FY-Zhu">
 <meta name="twitter:card" content="summary">
 
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>深入理解计算机系统第五章第六章 笔记 | 源之居</title>
+  <title>深入理解计算机系统第五章笔记 | 源之居</title>
   
 
 
@@ -168,7 +168,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          深入理解计算机系统第五章第六章 笔记
+          深入理解计算机系统第五章笔记
         </h1>
 
         <div class="post-meta">
@@ -177,10 +177,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-06-30 11:38:12 / 修改时间：13:29:23" itemprop="dateCreated datePublished" datetime="2022-06-30T11:38:12+08:00">2022-06-30</time>
+              <time title="创建时间：2022-06-30 11:38:12" itemprop="dateCreated datePublished" datetime="2022-06-30T11:38:12+08:00">2022-06-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-13 21:15:17" itemprop="dateModified" datetime="2022-07-13T21:15:17+08:00">2022-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -239,6 +245,53 @@
 </blockquote>
 <p><strong>时间局部性和空间局部性</strong></p>
 <p>避免代码出现差的局部性。</p>
+<h2 id="缓存不命中的种类"><a href="#缓存不命中的种类" class="headerlink" title="缓存不命中的种类"></a>缓存不命中的种类</h2><p>冷不命中：一个空的缓存称为冷缓存，冷缓存必然不命中，称为冷不命中。</p>
+<p>冲突不命中：常用的放置策略是将 k+1 层的某个块限制放置在 k 层块的一个小的子集中。比如 k+1 层的块 1,5,9,13 映射到 k层的块 0。这会带来冲突不命中。</p>
+<p>容量不命中：当访问的工作集的大小超过缓存的大小时，会发生容量不命中。即缓存太小了，不能缓存整个工作集。</p>
+<h2 id="高速缓存存储器"><a href="#高速缓存存储器" class="headerlink" title="高速缓存存储器"></a>高速缓存存储器</h2><p>最好看书回忆具体步骤</p>
+<blockquote>
+<p>大概就是，将k个固定大小的字节作为一个整体即“块”，按块储存到高速缓存中，所以要考虑块的大小也会影响到缓存效率（直接映射高速缓存容易引起抖动，例如 <strong>p432的例子</strong>）</p>
+</blockquote>
+<p>高速缓存确定一个请求是否命中，然后抽取出被请求的字的过程分为三步：</p>
+<p>组选择 行匹配 字抽取</p>
+<p><strong>具体例子参考 p430</strong></p>
+<h2 id="有关写的问题"><a href="#有关写的问题" class="headerlink" title="有关写的问题"></a>有关写的问题</h2><p>写命中（写一个已经缓存了的字 w）的情况下，高速缓存更新了本层的 w 的副本后，如何处理低一层的副本有两种方法：</p>
+<ol>
+<li><p>直写：立即将 w 的高速缓存块写回到低一层中。   </p>
+<ol>
+<li>优点：简单</li>
+<li>缺点：每次写都会占据总线流量</li>
+</ol>
+</li>
+<li><p>写回：尽可能地推迟更新，只有当替换算法要驱逐这个更新过的块时，才把它写到低一层中。</p>
+<ol>
+<li>优点：利用了局部性，可以显著地减少总线流量。</li>
+<li>缺点：增加了复杂性。必须为每个高速缓存行维护一个额外的修改位，表明此行是否被修改过。</li>
+</ol>
+</li>
+</ol>
+<p>写不命中情况下的两种方法：</p>
+<ol>
+<li><p>写分配：加载相应的低一层的块到本层中，然后更新这个高速缓存块。</p>
+<ol>
+<li>优点：利用写的空间局部性</li>
+<li>缺点：每次不命中都会导致一个块从低一层传送到高速缓存</li>
+</ol>
+</li>
+<li><p>非写分配：避开高速缓存，直接把这个字写到低一层中</p>
+</li>
+</ol>
+<p>直写一般与非写分配搭配，两者都更适用于存储器层次结构中的较高层。</p>
+<p>写回一般与写分配搭配，两者都更适用于存储器层次结构中的较低层，因为较低层的传送时间太长。</p>
+<blockquote>
+<p>因为硬件上复杂电路的实现越来越容易，所以现在使用写回和写分配越来越多。</p>
+</blockquote>
+<h2 id="程序中利用局部性"><a href="#程序中利用局部性" class="headerlink" title="程序中利用局部性"></a>程序中利用局部性</h2><p>写完配套的lab就行了</p>
+<ol>
+<li>注意力集中在内循环中</li>
+<li>按照数据对象存储在内存中的数据，按照步长为1来读数据，利用空间局部性</li>
+<li>一旦从存储器中读入了一个数据对象，就尽可能多使用它，利用时间局部性</li>
+</ol>
 
     </div>
 
@@ -257,7 +310,10 @@
     <a href="/2022/06/28/csapp-note3/" rel="prev" title="深入理解计算机系统第三章 笔记">
       <i class="fa fa-chevron-left"></i> 深入理解计算机系统第三章 笔记
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/03/git_often_used/" rel="next" title="常用git命令">
+      常用git命令 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -316,7 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">优化程序性能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">编译器优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%8C%87%E9%92%88%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">关于指针的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E4%BD%8E%E6%95%88%E7%8E%87"><span class="nav-number">1.2.</span> <span class="nav-text">循环中的低效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BD%E6%95%B0%E5%A4%9A%E6%AC%A1%E8%B0%83%E7%94%A8%E7%9A%84%E4%BD%8E%E6%95%88%E7%8E%87"><span class="nav-number">1.3.</span> <span class="nav-text">过程中函数多次调用的低效率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#inline%E4%BB%A3%E6%9B%BF%E4%BC%98%E5%8C%96%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%EF%BC%9B"><span class="nav-number">1.3.1.</span> <span class="nav-text">inline代替优化函数调用；</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%86%85%E5%AD%98%E5%BC%95%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">不必要的内存引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%A4%84%E7%90%86%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.5.</span> <span class="nav-text">流水线处理和并行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">存储器层次结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">2.1.</span> <span class="nav-text">存储技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">局部性原理</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">优化程序性能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">编译器优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%8C%87%E9%92%88%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">关于指针的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E4%BD%8E%E6%95%88%E7%8E%87"><span class="nav-number">1.2.</span> <span class="nav-text">循环中的低效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BD%E6%95%B0%E5%A4%9A%E6%AC%A1%E8%B0%83%E7%94%A8%E7%9A%84%E4%BD%8E%E6%95%88%E7%8E%87"><span class="nav-number">1.3.</span> <span class="nav-text">过程中函数多次调用的低效率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#inline%E4%BB%A3%E6%9B%BF%E4%BC%98%E5%8C%96%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%EF%BC%9B"><span class="nav-number">1.3.1.</span> <span class="nav-text">inline代替优化函数调用；</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%86%85%E5%AD%98%E5%BC%95%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">不必要的内存引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%A4%84%E7%90%86%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.5.</span> <span class="nav-text">流水线处理和并行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">存储器层次结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">2.1.</span> <span class="nav-text">存储技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">局部性原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E4%B8%8D%E5%91%BD%E4%B8%AD%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">缓存不命中的种类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E5%AD%98%E5%82%A8%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">高速缓存存储器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%85%B3%E5%86%99%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">有关写的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E4%B8%AD%E5%88%A9%E7%94%A8%E5%B1%80%E9%83%A8%E6%80%A7"><span class="nav-number">2.6.</span> <span class="nav-text">程序中利用局部性</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -336,7 +392,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>

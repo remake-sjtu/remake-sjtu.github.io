@@ -152,6 +152,167 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/19/20YearsOld/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/19/20YearsOld/" class="post-title-link" itemprop="url">20岁，我在寻找自己的路</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-08-19 00:46:22 / 修改时间：01:01:37" itemprop="dateCreated datePublished" datetime="2022-08-19T00:46:22+08:00">2022-08-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%94%9F%E6%97%A5/" itemprop="url" rel="index"><span itemprop="name">生日</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/03/git_often_used/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="FY-Zhu">
+      <meta itemprop="description" content="见山还是山">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="源之居">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/03/git_often_used/" class="post-title-link" itemprop="url">常用git命令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-03 16:02:52" itemprop="dateCreated datePublished" datetime="2022-08-03T16:02:52+08:00">2022-08-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-19 01:02:58" itemprop="dateModified" datetime="2022-08-19T01:02:58+08:00">2022-08-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/" itemprop="url" rel="index"><span itemprop="name">CS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>git –version &#x2F;&#x2F;查看git版本</p>
+<p>git config –global user.name 用户名<br>git config –global user.email 用户邮箱<br>&#x2F;&#x2F;设置用户签名 </p>
+<p>git init &#x2F;&#x2F;初始化本地库</p>
+<p>git status &#x2F;&#x2F;查看本地库状态</p>
+<p>git add 文件名  &#x2F;&#x2F;提交到暂存区</p>
+<p>git commit -m “日志信息” 文件名 &#x2F;&#x2F;提交到本地库</p>
+<p>git reflog  &#x2F;&#x2F;查看历史记录</p>
+<p>git log &#x2F;&#x2F;查看详细历史记录</p>
+<p>git reset –hard 版本号  &#x2F;&#x2F;版本穿梭</p>
+<p>git branch 分支名 &#x2F;&#x2F;创建分支</p>
+<p>git branch -v &#x2F;&#x2F;查看分支</p>
+<p>git checkout 分支名 &#x2F;&#x2F;切换分支</p>
+<p>git merge 分支名  &#x2F;&#x2F;合并分支到当前分支</p>
+<blockquote>
+<p>分支冲突后，人为修改冲突文件后，git add 文件名，git commuit -m “日志信息” (不带文件名)。</p>
+</blockquote>
+<p>git remote add 别名 远程https地址  &#x2F;&#x2F;给远程仓库起别名(最好与项目名称一致)</p>
+<p>git remote -v &#x2F;&#x2F;查看当前所有远程地址别名</p>
+<p>git push 别名 分支 &#x2F;&#x2F;推送本地分支上的内容到远程仓库</p>
+<p>git clone 远程地址&#x2F;别名 &#x2F;&#x2F;将远程仓库内容克隆到本地</p>
+<p>git pull 远程仓库地址&#x2F;别名 分支名称  &#x2F;&#x2F;将远程仓库分支最新内容拉下来后与本地分支合并</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/30/csapp-note4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -166,7 +327,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/06/30/csapp-note4/" class="post-title-link" itemprop="url">深入理解计算机系统第五章第六章 笔记</a>
+            <a href="/2022/06/30/csapp-note4/" class="post-title-link" itemprop="url">深入理解计算机系统第五章笔记</a>
         </h2>
 
         <div class="post-meta">
@@ -175,10 +336,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-06-30 11:38:12 / 修改时间：13:29:23" itemprop="dateCreated datePublished" datetime="2022-06-30T11:38:12+08:00">2022-06-30</time>
+              <time title="创建时间：2022-06-30 11:38:12" itemprop="dateCreated datePublished" datetime="2022-06-30T11:38:12+08:00">2022-06-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-13 21:15:17" itemprop="dateModified" datetime="2022-07-13T21:15:17+08:00">2022-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -237,6 +404,53 @@
 </blockquote>
 <p><strong>时间局部性和空间局部性</strong></p>
 <p>避免代码出现差的局部性。</p>
+<h2 id="缓存不命中的种类"><a href="#缓存不命中的种类" class="headerlink" title="缓存不命中的种类"></a>缓存不命中的种类</h2><p>冷不命中：一个空的缓存称为冷缓存，冷缓存必然不命中，称为冷不命中。</p>
+<p>冲突不命中：常用的放置策略是将 k+1 层的某个块限制放置在 k 层块的一个小的子集中。比如 k+1 层的块 1,5,9,13 映射到 k层的块 0。这会带来冲突不命中。</p>
+<p>容量不命中：当访问的工作集的大小超过缓存的大小时，会发生容量不命中。即缓存太小了，不能缓存整个工作集。</p>
+<h2 id="高速缓存存储器"><a href="#高速缓存存储器" class="headerlink" title="高速缓存存储器"></a>高速缓存存储器</h2><p>最好看书回忆具体步骤</p>
+<blockquote>
+<p>大概就是，将k个固定大小的字节作为一个整体即“块”，按块储存到高速缓存中，所以要考虑块的大小也会影响到缓存效率（直接映射高速缓存容易引起抖动，例如 <strong>p432的例子</strong>）</p>
+</blockquote>
+<p>高速缓存确定一个请求是否命中，然后抽取出被请求的字的过程分为三步：</p>
+<p>组选择 行匹配 字抽取</p>
+<p><strong>具体例子参考 p430</strong></p>
+<h2 id="有关写的问题"><a href="#有关写的问题" class="headerlink" title="有关写的问题"></a>有关写的问题</h2><p>写命中（写一个已经缓存了的字 w）的情况下，高速缓存更新了本层的 w 的副本后，如何处理低一层的副本有两种方法：</p>
+<ol>
+<li><p>直写：立即将 w 的高速缓存块写回到低一层中。   </p>
+<ol>
+<li>优点：简单</li>
+<li>缺点：每次写都会占据总线流量</li>
+</ol>
+</li>
+<li><p>写回：尽可能地推迟更新，只有当替换算法要驱逐这个更新过的块时，才把它写到低一层中。</p>
+<ol>
+<li>优点：利用了局部性，可以显著地减少总线流量。</li>
+<li>缺点：增加了复杂性。必须为每个高速缓存行维护一个额外的修改位，表明此行是否被修改过。</li>
+</ol>
+</li>
+</ol>
+<p>写不命中情况下的两种方法：</p>
+<ol>
+<li><p>写分配：加载相应的低一层的块到本层中，然后更新这个高速缓存块。</p>
+<ol>
+<li>优点：利用写的空间局部性</li>
+<li>缺点：每次不命中都会导致一个块从低一层传送到高速缓存</li>
+</ol>
+</li>
+<li><p>非写分配：避开高速缓存，直接把这个字写到低一层中</p>
+</li>
+</ol>
+<p>直写一般与非写分配搭配，两者都更适用于存储器层次结构中的较高层。</p>
+<p>写回一般与写分配搭配，两者都更适用于存储器层次结构中的较低层，因为较低层的传送时间太长。</p>
+<blockquote>
+<p>因为硬件上复杂电路的实现越来越容易，所以现在使用写回和写分配越来越多。</p>
+</blockquote>
+<h2 id="程序中利用局部性"><a href="#程序中利用局部性" class="headerlink" title="程序中利用局部性"></a>程序中利用局部性</h2><p>写完配套的lab就行了</p>
+<ol>
+<li>注意力集中在内循环中</li>
+<li>按照数据对象存储在内存中的数据，按照步长为1来读数据，利用空间局部性</li>
+<li>一旦从存储器中读入了一个数据对象，就尽可能多使用它，利用时间局部性</li>
+</ol>
 
       
     </div>
@@ -379,17 +593,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-06-27 18:20:19 / 修改时间：19:27:34" itemprop="dateCreated datePublished" datetime="2022-06-27T18:20:19+08:00">2022-06-27</time>
+              <time title="创建时间：2022-06-27 18:20:19" itemprop="dateCreated datePublished" datetime="2022-06-27T18:20:19+08:00">2022-06-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-19 01:02:32" itemprop="dateModified" datetime="2022-08-19T01:02:32+08:00">2022-08-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%80%89%E6%8B%A9/" itemprop="url" rel="index"><span itemprop="name">选择</span></a>
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
                 </span>
             </span>
 
@@ -411,72 +631,6 @@
 <p>我思想的改变和交大关系很大，<del>毕竟地狱难度的英语期末考试交大是独一份</del> 现在我还后悔来交大吗？后悔被调剂吗？<strong>我不后悔</strong>。</p>
 <p>动过去学校门口劝学弟学妹们不要为了<strong>不浪费一分</strong>去盲目冲学校的念头。想了想放弃了，各人有各人的际遇，一年前的我还在后悔来了交大，现在我却为自己感到幸运。再者，高考后的学生观念总是充斥着对于名校的向往 <del>我也向往CMU Stanford</del>，小县城出身的我们即使看了知乎上的言论也大都不会相信专业之间的差距远大于学校，总是以为好学校的专业不会是这样子的，这没办法改变。</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/EndExam_Of_HighSchool_choice/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/27/EndExam_Of_HighSchool_choice/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-06-27 18:19:37" itemprop="dateCreated datePublished" datetime="2022-06-27T18:19:37+08:00">2022-06-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%80%89%E6%8B%A9/" itemprop="url" rel="index"><span itemprop="name">选择</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -526,7 +680,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-23 22:31:11" itemprop="dateModified" datetime="2022-06-23T22:31:11+08:00">2022-06-23</time>
+                <time title="修改时间：2022-08-19 01:03:08" itemprop="dateModified" datetime="2022-08-19T01:03:08+08:00">2022-08-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -534,7 +688,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+                  <a href="/categories/CS/" itemprop="url" rel="index"><span itemprop="name">CS</span></a>
                 </span>
             </span>
 
@@ -608,7 +762,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/05/22/%E8%AE%A1%E7%BD%91_%E5%85%AB%E8%82%A1/" class="post-title-link" itemprop="url">计算机网络</a>
+            <a href="/2022/05/22/%E8%AE%A1%E7%BD%91_%E5%85%AB%E8%82%A1/" class="post-title-link" itemprop="url">计算机网络八股</a>
         </h2>
 
         <div class="post-meta">
@@ -625,7 +779,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-26 13:47:43" itemprop="dateModified" datetime="2022-05-26T13:47:43+08:00">2022-05-26</time>
+                <time title="修改时间：2022-08-19 01:04:48" itemprop="dateModified" datetime="2022-08-19T01:04:48+08:00">2022-08-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -633,7 +787,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+                  <a href="/categories/CS/" itemprop="url" rel="index"><span itemprop="name">CS</span></a>
                 </span>
             </span>
 
@@ -648,7 +802,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>截至今天，计网方面看完了《图解tcp—ip》《计算机网络自顶向下方法》和湖科大的教学视频。为了避免忘记，对一些面试问题做一下整理，既是复习重点也为大二面试的八股文做准备。</p>
+          <p>截至今天，计网方面看完了《图解tcp—ip》《计算机网络自顶向下方法》和湖科大的教学视频。为了避免忘记，对一些面试问题做一下整理，既是复习重点也为之后面试的八股文做准备。</p>
 <h1 id="自己综合整理的"><a href="#自己综合整理的" class="headerlink" title="自己综合整理的"></a>自己综合整理的</h1><h2 id="为什么网络要分层？"><a href="#为什么网络要分层？" class="headerlink" title="为什么网络要分层？"></a>为什么网络要分层？</h2><p>网络分层的原则：每一层独立于其它层完成自己的工作，而不需要相互依赖，上下层之间通 过标准结构来互相通信，简单易用又具有拓展性。复杂的系统需要分层，因为每一层都需要专注于一类事情。我们的网络分层的原因也是一 样，每一层只专注于做一类事情。</p>
 <p>为什么计算机网络要分层呢？我们再来较为系统的说一说：</p>
 <p>各层之间相互独立：各层之间相互独立，各层之间不需要关心其他层是如何实现的，只 需要知道自己如何调用下层提供好的功能就可以了（可以简单理解为接口调用）这个和我们对开发时系统进行分层是一个道理。</p>
@@ -1040,7 +1194,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/05/20/xiazhonghua_suibi/" class="post-title-link" itemprop="url">一位朋友的随笔</a>
+            <a href="/2022/05/20/xiazhonghua_suibi/" class="post-title-link" itemprop="url">好朋友的矫情随笔(笑</a>
         </h2>
 
         <div class="post-meta">
@@ -1052,13 +1206,20 @@
 
               <time title="创建时间：2022-05-20 21:11:12" itemprop="dateCreated datePublished" datetime="2022-05-20T21:11:12+08:00">2022-05-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-19 01:04:14" itemprop="dateModified" datetime="2022-08-19T01:04:14+08:00">2022-08-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%8E%E7%9A%84%E8%AF%9D/" itemprop="url" rel="index"><span itemprop="name">华的话</span></a>
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
                 </span>
             </span>
 
@@ -1370,90 +1531,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/27/some_thinking_about_physics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="FY-Zhu">
-      <meta itemprop="description" content="见山还是山">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="源之居">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/some_thinking_about_physics/" class="post-title-link" itemprop="url">关于物理的碎碎念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-27 21:26:40" itemprop="dateCreated datePublished" datetime="2022-04-27T21:26:40+08:00">2022-04-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-26 17:12:34" itemprop="dateModified" datetime="2022-05-26T17:12:34+08:00">2022-05-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/about-physics/" itemprop="url" rel="index"><span itemprop="name">about physics</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>每当我学习一些新的物理理论知识，深入了解后发现，它们和之前的许多东西竟然形成了完整的闭环，我就会不由得赞叹物理的神奇和前辈们的伟大。</p>
-<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>忘记了什么时候看见的一句话，大概意思如下</p>
-<blockquote>
-<p>选择物理专业意味着什么呢，对你来说这意味着在大学四年里，不论主动去探索自己感兴趣的领域还是被动的跟着老师去上那些严谨厚重的课程，你总会在不经意间为一个方程、一段历史感到震撼，你总会在做作业时想明白一些亘古不变的道理，你总会在四年后收获一个完整的物理框架–一个认识世界的开端。</p>
-</blockquote>
-<p>每每想起这些，总会获得莫名的力量</p>
-<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><p>麦克斯韦方程组刚提出的时候，物理学家不接受这个理论，因为</p>
-<blockquote>
-<p>这么复杂的东西，它要对才怪呢！</p>
-</blockquote>
-<p>电磁学课上听到这个，笑个不停。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1529,7 +1606,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
